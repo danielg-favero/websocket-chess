@@ -20,7 +20,10 @@
             "@websocket/*": ["websocket/*"],
             "@orchestrators/*": ["orchestrators/*"],
             "@handlers/*": ["handlers/*"],
-            "@types/*": ["@types/*"]
+            "@types/*": ["@types/*"],
+            "@builders/*": ["builders/*"],
+            "@routes/*": ["routes/*"],
+            "@lib/*": ["lib/*"],
         },
     },
     "include": ["src/**/*"],

@@ -33,6 +33,7 @@
         "@pages/*": ["pages/*"],
         "@interfaces/*": ["interfaces/*"],
         "@helpers/*": ["helpers/*"],
+        "@lib/*": ["lib/*"],
     },
   },
   "include": ["src"]

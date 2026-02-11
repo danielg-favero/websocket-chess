@@ -1,11 +1,14 @@
-import { gameOrchestrator } from "@orchestrators/game-orchestrator";
+import logger from "@lib/logger";
+import { gameRoomOrchestrator } from "@orchestrators/game-room-orchestrator";
 
 export class CreateGameHandler {
-  constructor(private orchestrator = gameOrchestrator) {}
+  constructor(private orchestrator = gameRoomOrchestrator) {}
 
   public handle() {
-    const game = this.orchestrator.create();
+    const gameRoom = this.orchestrator.create();
 
-    return game.getState();
+    logger.log(`CreateGameHandler: Game room created`);
+
+    return gameRoom.getState();
   }
 }

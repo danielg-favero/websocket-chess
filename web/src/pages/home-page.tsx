@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { createGame } from "@api/services/create-game";
-import { retrive } from "@helpers/retrive";
 
 import Button from "@components/button";
 import { useChessGame } from "@hooks/use-chess-game";
@@ -15,13 +14,13 @@ export default function HomePage() {
 
   const handleCreateGame = async () => {
     setLoading(true);
-    const [gameState, error] = await retrive(createGame);
+    const [error, gameState] = await createGame();
     setLoading(false);
 
-    if (!gameState || error) return;
-
-    setGameId(gameState.id);
-    connect();
+    if (error === null) {
+      setGameId(gameState.id);
+      connect();
+    }
   };
 
   useEffect(() => {

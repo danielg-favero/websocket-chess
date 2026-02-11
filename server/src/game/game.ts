@@ -16,26 +16,14 @@ import { Bishop } from "./pieces/bishop";
 import { Knight } from "./pieces/knight";
 import { King } from "./pieces/king";
 import { Queen } from "./pieces/queen";
-import { IPlayer } from "@interfaces/player";
-import { Player } from "./player";
-import { GameStatus } from "./game-status";
 
 export class Game implements IGame {
-  readonly id: string;
-
   board: IBoard;
   turn: IColor;
-  players: { white: IPlayer | null; black: IPlayer | null };
-  status: GameStatus;
 
-  constructor(id: string) {
-    this.id = id;
-
+  constructor() {
     this.board = new Board();
-    this.status = new GameStatus();
-    this.turn = Color.WHITE;
-    this.players = { white: null, black: null };
-
+    this.turn = new Color("WHITE");
     this.initializeBoard();
   }
 
@@ -89,73 +77,44 @@ export class Game implements IGame {
     this.board.place(new Queen(new Color("WHITE")), new Position(4, 7));
   }
 
-  addPlayer(playerId: string): void {
-    if (!this.players.white) {
-      this.players.white = new Player(playerId, new Color("WHITE"));
-      this.status.setStatus("WAITING");
-    }
-
-    if (!this.players.black) {
-      this.players.black = new Player(playerId, new Color("BLACK"));
-      this.status.setStatus("PLAYING");
-    }
-  }
-
   move(from: IPosition, to: IPosition): void {
     if (!(from instanceof Position) || !(to instanceof Position)) {
-      console.error(ERROR_MESSAGES.INVALID_POSITION);
-      return;
+      throw new Error(ERROR_MESSAGES.INVALID_POSITION);
     }
 
     if (!from.isInsideBoard() || !to.isInsideBoard()) {
-      console.error(ERROR_MESSAGES.POSITION_OUT_OF_BOARD);
-      return;
+      throw new Error(ERROR_MESSAGES.POSITION_OUT_OF_BOARD);
     }
 
     const piece = this.board.getPieceAt(from);
 
     if (!piece) {
-      console.error(ERROR_MESSAGES.NO_PIECE_AT_SOURCE);
-      return;
+      throw new Error(ERROR_MESSAGES.NO_PIECE_AT_SOURCE);
     }
 
     if (this.turn.isWhite() && !piece.color.isWhite()) {
-      console.error(ERROR_MESSAGES.INVALID_TURN);
-      return;
+      throw new Error(ERROR_MESSAGES.INVALID_TURN);
     }
 
     if (this.turn.isBlack() && !piece.color.isBlack()) {
-      console.error(ERROR_MESSAGES.INVALID_TURN);
-      return;
+      throw new Error(ERROR_MESSAGES.INVALID_TURN);
     }
 
     const targetPiece = this.board.getPieceAt(to);
-    console.log({ piece, targetPiece });
     if (targetPiece && !piece.isEnemy(targetPiece)) {
-      console.error(ERROR_MESSAGES.CANNOT_CAPTURE_OWN_PIECE);
-      return;
+      throw new Error(ERROR_MESSAGES.CANNOT_CAPTURE_OWN_PIECE);
     }
 
     if (!piece.canMove(from, to, this.board)) {
-      console.error(ERROR_MESSAGES.INVALID_MOVE);
-      return;
+      throw new Error(ERROR_MESSAGES.INVALID_MOVE);
     }
 
     this.board.move(from, to);
     this.turn = this.turn.isWhite() ? Color.BLACK : Color.WHITE;
   }
 
-  isCheckmate(): boolean {
-    return this.status.getStatus() === "CHECKMATE";
-  }
-
-  isFull(): boolean {
-    return !!this.players.white && !!this.players.black;
-  }
-
   getState(): IGameState {
     return {
-      id: this.id,
       board: this.board.grid.map((row) =>
         row.map((cell) => {
           if (!cell) return null;
@@ -165,10 +124,7 @@ export class Game implements IGame {
           };
         }),
       ),
-      status: this.status.getStatus(),
       turn: this.turn.value,
-      isFull: this.isFull(),
-      isCheckmate: this.isCheckmate(),
     };
   }
 }

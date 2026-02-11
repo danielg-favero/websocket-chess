@@ -1,7 +1,7 @@
-import { Socket } from "socket.io";
-
-import { gameOrchestrator } from "@orchestrators/game-orchestrator";
+import logger from "@lib/logger";
+import { gameRoomOrchestrator } from "@orchestrators/game-room-orchestrator";
 import { ERROR_MESSAGES, MESSAGES_TYPES } from "@config/messages";
+import { ISocketClient } from "@interfaces/socket-client";
 
 export interface JoinGamePayload {
   gameId: string;
@@ -9,32 +9,37 @@ export interface JoinGamePayload {
 
 export class JoinGameHandler {
   constructor(
-    private socket: Socket,
-    private orchestrator = gameOrchestrator
+    private socket: ISocketClient,
+    private orchestrator = gameRoomOrchestrator,
   ) {}
 
   public handle(payload: JoinGamePayload) {
     const { gameId } = payload;
+    const playerId = this.socket.clientId;
+    const gameRoom = this.orchestrator.join(gameId, playerId);
 
-    const playerId = this.socket.id;
-    const game = this.orchestrator.join(gameId, playerId);
-
-    if (!game) {
-      return this.socket.send(
-        JSON.stringify({
-          type: MESSAGES_TYPES.ERROR,
-          payload: {
-            message: ERROR_MESSAGES.COULD_NOT_JOIN_GAME,
-          },
-        })
+    if (!gameRoom) {
+      logger.error(
+        `JoinGameHandler: Could not join game room ${gameId} for player ${playerId}`,
       );
+
+      return this.socket.sendToClient(playerId, {
+        type: MESSAGES_TYPES.ERROR,
+        payload: {
+          message: ERROR_MESSAGES.COULD_NOT_JOIN_GAME,
+        },
+      });
     }
 
-    return this.socket.send(
-      JSON.stringify({
-        type: MESSAGES_TYPES.GAME_STATE,
-        payload: game.getState(),
-      })
+    this.socket.joinRoom(gameId);
+
+    logger.log(
+      `JoinGameHandler: Player ${playerId} joined game room ${gameId}`,
     );
+
+    return this.socket.emitToRoom(gameId, {
+      type: MESSAGES_TYPES.GAME_STATE,
+      payload: gameRoom.getState(),
+    });
   }
 }

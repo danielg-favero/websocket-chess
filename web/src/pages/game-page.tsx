@@ -5,12 +5,14 @@ import Board from "@components/board";
 import Loader from "@components/loader";
 
 import { useChessGame } from "@hooks/use-chess-game";
-import type { IGameState } from "@interfaces/game-state";
+import type { IGameRoomState } from "@interfaces/game-room-state";
 
 export default function GamePage() {
   const { gameId } = useParams();
   const navigate = useNavigate();
-  const { isConnected, joinGame, message } = useChessGame();
+  const { isConnected, joinGame, message, connect } = useChessGame();
+
+  console.log(message);
 
   useEffect(() => {
     if (!gameId) {
@@ -18,15 +20,20 @@ export default function GamePage() {
       return;
     }
 
-    if (!isConnected) return;
-
-    joinGame(gameId);
+    if (!isConnected) connect();
   }, [gameId]);
 
-  if (!isConnected) return <Loader />;
+  useEffect(() => {
+    if (!isConnected) return;
+    if (!gameId) return;
 
-  if (message?.type === "GAME_STATE") {
-    return <Board gameState={message.payload as IGameState} />;
+    joinGame(gameId);
+  }, [isConnected, gameId]);
+
+  if (!isConnected || !message) return <Loader />;
+
+  if (message.type === "GAME_STATE") {
+    return <Board gameRoomState={message.payload as IGameRoomState} />;
   }
 
   return <Loader />;

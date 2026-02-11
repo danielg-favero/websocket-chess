@@ -1,9 +1,14 @@
 import type { IGameState } from "@interfaces/game-state";
 
 import { http } from "@api/http";
+import { error, ok } from "@helpers/result";
 
-export async function createGame(): Promise<IGameState> {
+export async function createGame() {
   const response = await http.post<IGameState>("/game");
 
-  return response.data;
+  if (!response.data) {
+    return error({ reason: "No game state returned" });
+  }
+
+  return ok(response.data);
 }

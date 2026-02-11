@@ -5,18 +5,20 @@ import Piece from "@components/piece";
 
 import type { Coordinates } from "@config/coordinates";
 
-import type { IGameState } from "@interfaces/game-state";
+import type { IGameRoomState } from "@interfaces/game-room-state";
+
 import { useChessGame } from "@hooks/use-chess-game";
 
 import "./board.css";
 
 interface BoardProps {
-  gameState: IGameState;
+  gameRoomState: IGameRoomState;
 }
 
-function Board({ gameState }: BoardProps) {
+function Board({ gameRoomState }: BoardProps) {
   const { movePiece } = useChessGame();
   const [selectedCell, setSelectedCell] = useState<Coordinates | null>(null);
+  const { gameState } = gameRoomState;
   const { board } = gameState;
 
   const handleCellClick = (coordinates: Coordinates) => {
@@ -46,7 +48,7 @@ function Board({ gameState }: BoardProps) {
     if (!selectedCell) return;
 
     movePiece({
-      gameId: gameState.id,
+      gameId: gameRoomState.id,
       from: selectedCell,
       to,
     });

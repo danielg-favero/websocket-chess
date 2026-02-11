@@ -9,8 +9,7 @@ interface MovePiecePayload {
 }
 
 export function useChessGame() {
-  const { isConnected, message, connect, disconnect, sendMessage } =
-    useWebsocket();
+  const { sendMessage, ...webSocket } = useWebsocket();
 
   const joinGame = (gameId: string) => {
     sendMessage({ type: MESSAGES_TYPES.JOIN_GAME, payload: { gameId } });
@@ -22,11 +21,7 @@ export function useChessGame() {
 
   return {
     joinGame,
-    connect,
-    disconnect,
-    isConnected,
-    disconnected: !isConnected,
-    message,
     movePiece,
+    ...webSocket,
   };
 }

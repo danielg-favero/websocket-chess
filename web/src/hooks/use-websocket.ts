@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 import { socket } from "@api/socket";
 import type { MessageDTO } from "@config/messages";
+import logger from "@lib/logger";
 
 export function useWebsocket() {
   const [isConnected, setIsConnected] = useState(socket.connected);
@@ -12,6 +13,7 @@ export function useWebsocket() {
   }
 
   function onConnect() {
+    logger.log("WS Connected");
     setIsConnected(true);
   }
 
@@ -20,7 +22,13 @@ export function useWebsocket() {
   }
 
   function onDisconnect() {
+    logger.log("WS Disconnected");
     setIsConnected(false);
+  }
+
+  function onMessage(data: string) {
+    logger.log(`WS Message: ${data}`);
+    setMessage(JSON.parse(data));
   }
 
   function sendMessage(data: MessageDTO) {
@@ -30,14 +38,12 @@ export function useWebsocket() {
   useEffect(() => {
     socket.on("connect", onConnect);
     socket.on("disconnect", onDisconnect);
-    socket.on("message", (data) => {
-      setMessage(JSON.parse(data));
-    });
+    socket.on("message", onMessage);
 
     return () => {
       socket.off("connect", onConnect);
       socket.off("disconnect", onDisconnect);
-      socket.off("message");
+      socket.off("message", onMessage);
     };
   }, []);
 
