@@ -1,4 +1,4 @@
-import { MESSAGES_TYPES } from "@config/messages";
+import { MESSAGES_TYPES } from "@danielg.favero/websocket-chess-package";
 
 import { useWebsocket } from "./use-websocket";
 

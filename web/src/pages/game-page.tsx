@@ -1,3 +1,5 @@
+import type { IGameRoomState } from "@danielg.favero/websocket-chess-package";
+
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 
@@ -5,7 +7,6 @@ import Board from "@components/board";
 import Loader from "@components/loader";
 
 import { useChessGame } from "@hooks/use-chess-game";
-import type { IGameRoomState } from "@interfaces/game-room-state";
 
 export default function GamePage() {
   const { gameId } = useParams();

@@ -1,13 +1,12 @@
 import type { HTMLAttributes } from "react";
 
-import type { TColor } from "@interfaces/color";
-
-import type { TPieceType } from "@interfaces/piece";
+import type { IColor } from "@danielg.favero/websocket-chess-package";
+import type { TPieceType } from "@danielg.favero/websocket-chess-package";
 
 import "./piece.css";
 
-interface PieceProps extends HTMLAttributes<HTMLSpanElement> {
-  color: TColor;
+interface PieceProps extends Omit<HTMLAttributes<HTMLSpanElement>, "color"> {
+  color: IColor["value"];
   type: TPieceType;
 }
 

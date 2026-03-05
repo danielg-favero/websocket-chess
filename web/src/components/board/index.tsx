@@ -1,11 +1,10 @@
+import type { Coordinates } from "@danielg.favero/websocket-chess-package";
+import type { IGameRoomState } from "@danielg.favero/websocket-chess-package";
+
 import { useCallback, useState } from "react";
 
 import Cell from "@components/cell";
 import Piece from "@components/piece";
-
-import type { Coordinates } from "@config/coordinates";
-
-import type { IGameRoomState } from "@interfaces/game-room-state";
 
 import { useChessGame } from "@hooks/use-chess-game";
 

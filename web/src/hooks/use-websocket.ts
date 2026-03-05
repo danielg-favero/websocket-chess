@@ -1,8 +1,11 @@
+import {
+  logger,
+  type MessageDTO,
+} from "@danielg.favero/websocket-chess-package";
+
 import { useEffect, useState } from "react";
 
 import { socket } from "@api/socket";
-import type { MessageDTO } from "@config/messages";
-import logger from "@lib/logger";
 
 export function useWebsocket() {
   const [isConnected, setIsConnected] = useState(socket.connected);
