@@ -9,6 +9,7 @@
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "declaration": true,
+        "allowJs": true,
     
         "outDir": "./dist",
         "rootDir": "./src",
