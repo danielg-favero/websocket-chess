@@ -1,6 +1,7 @@
+import { logger } from "@danielg.favero/websocket-chess-package";
+
 import { Express } from "express";
 import http from "http";
-import logger from "@lib/logger";
 
 export class HttpServerBuilder {
   private httpServer: http.Server;

@@ -1,4 +1,5 @@
-import { IPlayer, IPlayerState } from "@interfaces/player";
+import { IPlayer, IPlayerState } from "@danielg.favero/websocket-chess-package";
+
 import { Color } from "./color";
 
 export class Player implements IPlayer {

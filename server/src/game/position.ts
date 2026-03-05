@@ -1,5 +1,4 @@
-import { BOARD_SIZE } from "@config/board-size";
-import { IPosition } from "@interfaces/position";
+import { BOARD_SIZE, IPosition } from "@danielg.favero/websocket-chess-package";
 
 export class Position implements IPosition {
   x: number;

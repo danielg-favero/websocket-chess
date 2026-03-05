@@ -1,8 +1,10 @@
 import { Server, ServerOptions } from "socket.io";
 import http from "http";
-import logger from "@lib/logger";
 
-import { SocketMessageCallback } from "@interfaces/socket-client";
+import {
+  logger,
+  SocketMessageCallback,
+} from "@danielg.favero/websocket-chess-package";
 
 export class WebsocketServerBuilder {
   private io: Server;

@@ -1,7 +1,11 @@
 import { Socket } from "socket.io";
-import logger from "@lib/logger";
 
-import { ERROR_MESSAGES, MessageDTO, MESSAGES_TYPES } from "@config/messages";
+import {
+  ERROR_MESSAGES,
+  MessageDTO,
+  MESSAGES_TYPES,
+  logger,
+} from "@danielg.favero/websocket-chess-package";
 import { JoinGameHandler, JoinGamePayload } from "@handlers/join-game";
 import { MovePieceHandler, MovePiecePayload } from "@handlers/move-piece";
 import { SocketClient } from "@lib/socket-client";

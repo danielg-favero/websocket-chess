@@ -1,9 +1,12 @@
 import { gameRoomOrchestrator } from "@orchestrators/game-room-orchestrator";
-import { ERROR_MESSAGES, MESSAGES_TYPES } from "@config/messages";
+import {
+  ERROR_MESSAGES,
+  MESSAGES_TYPES,
+  ISocketClient,
+  Coordinates,
+  logger,
+} from "@danielg.favero/websocket-chess-package";
 import { Position } from "@game/position";
-import { Coordinates } from "@config/coordinates";
-import { ISocketClient } from "@interfaces/socket-client";
-import logger from "@lib/logger";
 
 export interface MovePiecePayload {
   gameId: string;

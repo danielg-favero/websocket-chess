@@ -2,7 +2,8 @@ import { json } from "express";
 import cors from "cors";
 import socketIo from "socket.io";
 import dotenv from "dotenv";
-import logger from "@lib/logger";
+
+import { logger } from "@danielg.favero/websocket-chess-package";
 
 import { WebsocketServerBuilder } from "@builders/websocket";
 import { HttpServerBuilder } from "@builders/http";

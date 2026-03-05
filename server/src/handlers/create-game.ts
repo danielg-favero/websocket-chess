@@ -1,4 +1,4 @@
-import logger from "@lib/logger";
+import { logger } from "@danielg.favero/websocket-chess-package";
 import { gameRoomOrchestrator } from "@orchestrators/game-room-orchestrator";
 
 export class CreateGameHandler {

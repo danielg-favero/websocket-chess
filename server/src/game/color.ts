@@ -1,4 +1,4 @@
-import { IColor } from "@interfaces/color";
+import { IColor } from "@danielg.favero/websocket-chess-package";
 
 export class Color implements IColor {
   value: "WHITE" | "BLACK";

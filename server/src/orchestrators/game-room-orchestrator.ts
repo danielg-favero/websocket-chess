@@ -1,11 +1,14 @@
 import { v4 as uuid } from "uuid";
+import {
+  logger,
+  IPosition,
+  IGameRoomState,
+  IGameRoom,
+} from "@danielg.favero/websocket-chess-package";
 
-import logger from "@lib/logger";
-import { IGameRoom } from "@interfaces/game-room";
 import { Game } from "@game/game";
-import { Player } from "@game/player";
 import { GameRoom } from "@game/game-room";
-import { IPosition } from "@interfaces/position";
+import { Player } from "@game/player";
 
 class GameRoomOrchestrator {
   private gameRooms: Map<string, IGameRoom> = new Map();

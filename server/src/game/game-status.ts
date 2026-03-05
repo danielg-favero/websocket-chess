@@ -1,4 +1,4 @@
-import { TGameStatus } from "@interfaces/game-statuts";
+import { TGameStatus } from "@danielg.favero/websocket-chess-package";
 
 export class GameStatus {
   private status: TGameStatus;

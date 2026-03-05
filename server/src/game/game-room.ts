@@ -1,8 +1,10 @@
-import { IGameRoom } from "@interfaces/game-room";
-import { IGame } from "@interfaces/game";
-import { IPlayer } from "@interfaces/player";
-import { TGameStatus } from "@interfaces/game-statuts";
-import { IGameRoomState } from "@interfaces/game-room-state";
+import {
+  IGameRoom,
+  IGame,
+  IPlayer,
+  TGameStatus,
+  IGameRoomState,
+} from "@danielg.favero/websocket-chess-package";
 
 import { Color } from "./color";
 

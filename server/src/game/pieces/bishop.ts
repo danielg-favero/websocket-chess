@@ -1,6 +1,8 @@
-import { IPosition } from "@interfaces/position";
-import { IBoard } from "@interfaces/board";
-import { IColor } from "@interfaces/color";
+import {
+  IPosition,
+  IBoard,
+  IColor,
+} from "@danielg.favero/websocket-chess-package";
 
 import { Piece } from "./piece";
 

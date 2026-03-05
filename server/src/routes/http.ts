@@ -1,6 +1,6 @@
 import { CreateGameHandler } from "@handlers/create-game";
 import { Router } from "express";
-import logger from "@lib/logger";
+import { logger } from "@danielg.favero/websocket-chess-package";
 
 const router = Router();
 
