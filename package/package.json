@@ -1,14 +1,15 @@
 {
   "name": "@danielg.favero/websocket-chess-package",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "Shared utils and types for frontend and backend",
+  "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "webpack",
+    "build": "tsc && tsc-alias && webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -24,6 +25,7 @@
   },
   "devDependencies": {
     "ts-loader": "^9.5.4",
+    "tsc-alias": "^1.8.16",
     "typescript": "^5.9.3"
   }
 }

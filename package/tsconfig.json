@@ -15,11 +15,6 @@
         "rootDir": "./src",
 
         "baseUrl": "./src",
-        "paths": {
-            "@config/*": ["config/*"],
-            "@interfaces/*": ["interfaces/*"],
-            "@lib/*": ["lib/*"],
-        },
     },
     "include": ["src/**/*"],
     "exclude": ["node_modules", "dist"]

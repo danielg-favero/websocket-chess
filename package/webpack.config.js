@@ -1,6 +1,10 @@
-const path = require('path')
+import path from 'path'
+import { fileURLToPath } from 'url';
 
-module.exports = {
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+export default {
     entry: './src/index.ts',
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -17,12 +21,6 @@ module.exports = {
     },
     resolve: {
         extensions: ['.tsx', '.ts', '.js'],
-        alias: {
-            '@interfaces': path.resolve(__dirname, 'src/interfaces/'),
-            '@config': path.resolve(__dirname, 'src/config/'),
-            '@lib': path.resolve(__dirname, 'src/lib/'),
-            '@': path.resolve(__dirname, 'src/')
-        },
     },
     mode: 'production'
 }
