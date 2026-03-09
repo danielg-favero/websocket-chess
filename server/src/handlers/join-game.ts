@@ -2,8 +2,8 @@ import {
   logger,
   ERROR_MESSAGES,
   MESSAGES_TYPES,
-  ISocketClient,
 } from "@danielg.favero/websocket-chess-package";
+import { ISocketClient } from "@interfaces/socket-client";
 import { gameRoomOrchestrator } from "@orchestrators/game-room-orchestrator";
 
 export interface JoinGamePayload {

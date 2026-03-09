@@ -13,8 +13,6 @@ export default function GamePage() {
   const navigate = useNavigate();
   const { isConnected, joinGame, message, connect } = useChessGame();
 
-  console.log(message);
-
   useEffect(() => {
     if (!gameId) {
       navigate("/");

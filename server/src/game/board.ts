@@ -1,9 +1,7 @@
-import {
-  BOARD_SIZE,
-  IBoard,
-  IPiece,
-  IPosition,
-} from "@danielg.favero/websocket-chess-package";
+import { BOARD_SIZE } from "@danielg.favero/websocket-chess-package";
+import { IBoard } from "@interfaces/board";
+import { IPiece } from "@interfaces/piece";
+import { IPosition } from "@interfaces/position";
 
 export class Board implements IBoard {
   grid: Array<Array<IPiece | null>>;

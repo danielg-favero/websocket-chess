@@ -1,7 +1,8 @@
-import { IColor } from "@danielg.favero/websocket-chess-package";
+import { TColorValue } from "@danielg.favero/websocket-chess-package";
+import { IColor } from "@interfaces/color";
 
 export class Color implements IColor {
-  value: "WHITE" | "BLACK";
+  value: TColorValue;
 
   static WHITE = new Color("WHITE");
   static BLACK = new Color("BLACK");

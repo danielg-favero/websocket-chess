@@ -3,7 +3,7 @@ import { Socket } from "socket.io";
 import {
   ISocketClient,
   SocketMessageCallback,
-} from "@danielg.favero/websocket-chess-package";
+} from "@interfaces/socket-client";
 
 export class SocketClient implements ISocketClient {
   readonly clientId: string;

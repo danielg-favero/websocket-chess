@@ -1,4 +1,5 @@
-import { IPlayerState } from "./player-state";
+import { IPlayerState } from "@danielg.favero/websocket-chess-package";
+
 import { IColor } from "./color";
 
 export interface IPlayer {

@@ -1,7 +1,10 @@
-import { IGame } from "./game";
-import { IGameRoomState } from "./game-room-state";
-import { TGameStatus } from "./game-statuts";
+import {
+  IGameRoomState,
+  TGameStatus,
+} from "@danielg.favero/websocket-chess-package";
+
 import { IPlayer } from "./player";
+import { IGame } from "./game";
 
 export interface IGameRoom {
   id: string;

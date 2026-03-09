@@ -1,11 +1,11 @@
 import {
   ERROR_MESSAGES,
-  IGame,
-  IBoard,
-  IPosition,
-  IColor,
   IGameState,
 } from "@danielg.favero/websocket-chess-package";
+import { IGame } from "@interfaces/game";
+import { IColor } from "@interfaces/color";
+import { IBoard } from "@interfaces/board";
+import { IPosition } from "@interfaces/position";
 
 import { Board } from "./board";
 import { Color } from "./color";

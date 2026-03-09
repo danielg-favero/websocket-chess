@@ -1,6 +1,7 @@
+import { IGameState } from "@danielg.favero/websocket-chess-package";
+
 import { IBoard } from "./board";
 import { IColor } from "./color";
-import { IGameState } from "./game-state";
 import { IPosition } from "./position";
 
 export interface IGame {

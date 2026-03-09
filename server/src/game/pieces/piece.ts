@@ -1,10 +1,9 @@
-import {
-  IBoard,
-  IColor,
-  IPiece,
-  TPieceType,
-  IPosition,
-} from "@danielg.favero/websocket-chess-package";
+import { TPieceType } from "@danielg.favero/websocket-chess-package/dist/interfaces/piece-type";
+
+import { IBoard } from "@interfaces/board";
+import { IColor } from "@interfaces/color";
+import { IPiece } from "@interfaces/piece";
+import { IPosition } from "@interfaces/position";
 
 export abstract class Piece implements IPiece {
   color: IColor;

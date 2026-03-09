@@ -1,10 +1,8 @@
 import { v4 as uuid } from "uuid";
-import {
-  logger,
-  IPosition,
-  IGameRoomState,
-  IGameRoom,
-} from "@danielg.favero/websocket-chess-package";
+import { logger } from "@danielg.favero/websocket-chess-package";
+
+import { IGameRoom } from "@interfaces/game-room";
+import { IPosition } from "@interfaces/position";
 
 import { Game } from "@game/game";
 import { GameRoom } from "@game/game-room";

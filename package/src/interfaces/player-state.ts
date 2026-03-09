@@ -1,6 +1,6 @@
-import { IColor } from "./color";
+import { TColorValue } from "./color";
 
 export interface IPlayerState {
   id: string;
-  color: IColor["value"];
+  color: TColorValue;
 }

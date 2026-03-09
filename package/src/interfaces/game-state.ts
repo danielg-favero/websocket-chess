@@ -1,7 +1,7 @@
-import { IColor } from "./color";
-import { TPieceType } from "./piece";
+import { TColorValue } from "./color";
+import { TPieceType } from "./piece-type";
 
 export interface IGameState {
-  board: Array<Array<{ type: TPieceType; color: IColor["value"] } | null>>;
-  turn: IColor["value"];
+  board: Array<Array<{ type: TPieceType; color: TColorValue } | null>>;
+  turn: TColorValue;
 }

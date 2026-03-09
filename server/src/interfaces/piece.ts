@@ -1,3 +1,5 @@
+import { TPieceType } from "@danielg.favero/websocket-chess-package";
+
 import { IBoard } from "./board";
 import { IColor } from "./color";
 import { IPosition } from "./position";
@@ -8,11 +10,3 @@ export interface IPiece {
   canMove(from: IPosition, to: IPosition, board: IBoard): boolean;
   isEnemy(other: IPiece): boolean;
 }
-
-export type TPieceType =
-  | "KING"
-  | "QUEEN"
-  | "ROOK"
-  | "BISHOP"
-  | "KNIGHT"
-  | "PAWN";
