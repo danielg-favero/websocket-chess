@@ -6,24 +6,23 @@ import {
 import { ISocketClient } from "@interfaces/socket-client";
 import { gameRoomOrchestrator } from "@orchestrators/game-room-orchestrator";
 
-export interface JoinGamePayload {
+export interface IJoinGameUseCase {
   gameId: string;
 }
 
-export class JoinGameHandler {
+export class JoinGameUseCase {
   constructor(
     private socket: ISocketClient,
     private orchestrator = gameRoomOrchestrator,
   ) {}
 
-  public handle(payload: JoinGamePayload) {
-    const { gameId } = payload;
+  public execute({ gameId }: IJoinGameUseCase) {
     const playerId = this.socket.clientId;
     const gameRoom = this.orchestrator.join(gameId, playerId);
 
     if (!gameRoom) {
       logger.error(
-        `JoinGameHandler: Could not join game room ${gameId} for player ${playerId}`,
+        `JoinGameUseCase: Could not join game room ${gameId} for player ${playerId}`,
       );
 
       return this.socket.sendToClient(playerId, {
@@ -37,12 +36,20 @@ export class JoinGameHandler {
     this.socket.joinRoom(gameId);
 
     logger.log(
-      `JoinGameHandler: Player ${playerId} joined game room ${gameId}`,
+      `JoinGameUseCase: Player ${playerId} joined game room ${gameId}`,
     );
 
+    const player = gameRoom.getPlayer(playerId);
+
     return this.socket.emitToRoom(gameId, {
-      type: MESSAGES_TYPES.GAME_STATE,
-      payload: gameRoom.getState(),
+      type: MESSAGES_TYPES.JOIN_GAME,
+      payload: {
+        player: {
+          id: player!.id,
+          color: player!.color.value,
+        },
+        gameState: gameRoom.getState(),
+      },
     });
   }
 }

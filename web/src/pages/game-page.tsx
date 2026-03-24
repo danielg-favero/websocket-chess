@@ -1,5 +1,3 @@
-import type { IGameRoomState } from "@danielg.favero/websocket-chess-package";
-
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 
@@ -31,8 +29,10 @@ export default function GamePage() {
 
   if (!isConnected || !message) return <Loader />;
 
-  if (message.type === "GAME_STATE") {
-    return <Board gameRoomState={message.payload as IGameRoomState} />;
+  console.log({ message });
+
+  if (message.type === "JOIN_GAME") {
+    return <Board gameRoomState={message.payload.gameState} />;
   }
 
   return <Loader />;

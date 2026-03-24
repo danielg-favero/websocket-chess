@@ -2,15 +2,21 @@ import { Socket } from "socket.io";
 
 import {
   ERROR_MESSAGES,
-  MessageDTO,
+  GenericMessageTransaction,
   MESSAGES_TYPES,
   logger,
 } from "@danielg.favero/websocket-chess-package";
-import { JoinGameHandler, JoinGamePayload } from "@handlers/join-game";
-import { MovePieceHandler, MovePiecePayload } from "@handlers/move-piece";
+import {
+  JoinGameUseCase,
+  IJoinGameUseCase,
+} from "@use-cases/join-game-use-case";
+import {
+  MovePieceUseCase,
+  IMovePieceUseCase,
+} from "@use-cases/move-piece-use-case";
 import { SocketClient } from "@lib/socket-client";
 
-function isValidMessage(message: any): message is MessageDTO {
+function isValidMessage(message: any): message is GenericMessageTransaction {
   return "type" in message && "payload" in message;
 }
 
@@ -28,13 +34,13 @@ export function routeMessage(socket: Socket, rawMessage: string) {
   switch (message.type) {
     case MESSAGES_TYPES.JOIN_GAME: {
       logger.log("WS Joining game");
-      const joinGameHandler = new JoinGameHandler(socketClient);
-      return joinGameHandler.handle(message.payload as JoinGamePayload);
+      const joinGameUseCase = new JoinGameUseCase(socketClient);
+      return joinGameUseCase.execute(message.payload as IJoinGameUseCase);
     }
     case MESSAGES_TYPES.MOVE:
       logger.log("WS Moving piece");
-      const movePieceHandler = new MovePieceHandler(socketClient);
-      return movePieceHandler.handle(message.payload as MovePiecePayload);
+      const movePieceUseCase = new MovePieceUseCase(socketClient);
+      return movePieceUseCase.execute(message.payload as IMovePieceUseCase);
     default:
       logger.log("WS Unknown message");
       return socketClient.send({

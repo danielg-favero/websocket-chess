@@ -16,7 +16,7 @@ export function useWebsocket() {
   }
 
   function onConnect() {
-    logger.log("WS Connected");
+    // logger.log("WS Connected");
     setIsConnected(true);
   }
 
@@ -25,7 +25,7 @@ export function useWebsocket() {
   }
 
   function onDisconnect() {
-    logger.log("WS Disconnected");
+    // logger.log("WS Disconnected");
     setIsConnected(false);
   }
 

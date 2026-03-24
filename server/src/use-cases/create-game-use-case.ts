@@ -1,13 +1,13 @@
 import { logger } from "@danielg.favero/websocket-chess-package";
 import { gameRoomOrchestrator } from "@orchestrators/game-room-orchestrator";
 
-export class CreateGameHandler {
+export class CreateGameUseCase {
   constructor(private orchestrator = gameRoomOrchestrator) {}
 
-  public handle() {
+  public execute() {
     const gameRoom = this.orchestrator.create();
 
-    logger.log(`CreateGameHandler: Game room created`);
+    logger.log(`CreateGameUseCase: Game room created`);
 
     return gameRoom.getState();
   }

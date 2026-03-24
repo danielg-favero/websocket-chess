@@ -16,67 +16,62 @@ class GameRoomOrchestrator {
     const game = new Game();
     const gameRoom = new GameRoom(gameId, game);
 
-    this.gameRooms.set(gameId, gameRoom);
     logger.log(`ORCHESTRATOR: Game room created: ${gameId}`);
-
-    return gameRoom;
+    return this.update(gameId, gameRoom);
   }
 
-  join(gameId: string, playerId: string): IGameRoom | null {
-    const room = this.get(gameId);
+  join(roomId: string, playerId: string): IGameRoom | null {
+    const room = this.get(roomId);
 
     if (!room) return null;
     if (room.isFull()) return null;
-    if (this.isJoined(gameId, playerId)) return room;
+    if (this.isJoined(roomId, playerId)) return null;
 
     const newPlayer = new Player(playerId);
     room.addPlayer(newPlayer);
 
-    this.update(gameId, room);
-    logger.log(`ORCHESTRATOR: Player ${playerId} joined game room ${gameId}`);
-
-    return room;
+    logger.log(`ORCHESTRATOR: Player ${playerId} joined game room ${roomId}`);
+    return this.update(roomId, room);
   }
 
-  isJoined(gameId: string, playerId: string): IGameRoom | null {
-    const room = this.get(gameId);
+  isJoined(roomId: string, playerId: string): boolean {
+    const room = this.get(roomId);
 
-    if (!room) return null;
+    if (!room) return false;
 
     const player = room.getPlayer(playerId);
+    if (player) return true;
 
-    if (!player) return null;
-
-    logger.log(
-      `ORCHESTRATOR: Player ${playerId} is already joined in game room ${gameId}`,
-    );
-
-    return player.id === playerId ? room : null;
+    return false;
   }
 
-  move(gameId: string, from: IPosition, to: IPosition): IGameRoom | null {
-    const room = this.get(gameId);
+  move(
+    roomId: string,
+    playerId: string,
+    from: IPosition,
+    to: IPosition,
+  ): IGameRoom | null {
+    const room = this.get(roomId);
 
     if (!room) return null;
+    if (!this.isJoined(roomId, playerId)) return null;
 
     const game = room.getGame();
     game.move(from, to);
 
-    this.update(gameId, room);
-
     logger.log(
-      `ORCHESTRATOR: Piece moved from ${from.x},${from.y} to ${to.x},${to.y} in game room ${gameId}`,
+      `ORCHESTRATOR: Piece moved from (${from.x},${from.y}) to (${to.x},${to.y}) in game room ${roomId}`,
     );
-
-    return room;
+    return this.update(roomId, room);
   }
 
-  private get(gameId: string): IGameRoom | undefined {
-    return this.gameRooms.get(gameId);
+  get(roomId: string): IGameRoom | undefined {
+    return this.gameRooms.get(roomId);
   }
 
-  private update(gameId: string, gameRoom: IGameRoom): void {
-    this.gameRooms.set(gameId, gameRoom);
+  private update(roomId: string, gameRoom: IGameRoom) {
+    this.gameRooms.set(roomId, gameRoom);
+    return gameRoom;
   }
 }
 

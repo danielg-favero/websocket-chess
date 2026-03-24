@@ -21,6 +21,8 @@ export default function HomePage() {
       setGameRoomId(gameRoom.id);
       connect();
     }
+
+    setLoading(false);
   };
 
   useEffect(() => {
