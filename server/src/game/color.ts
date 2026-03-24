@@ -18,4 +18,8 @@ export class Color implements IColor {
   isBlack(): boolean {
     return this.value === Color.BLACK.value;
   }
+
+  equals(other: IColor): boolean {
+    return this.value === other.value;
+  }
 }

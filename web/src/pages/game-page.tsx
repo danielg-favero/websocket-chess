@@ -31,8 +31,8 @@ export default function GamePage() {
 
   console.log({ message });
 
-  if (message.type === "JOIN_GAME") {
-    return <Board gameRoomState={message.payload.gameState} />;
+  if (message.type === "GAME_STATE") {
+    return <Board gameRoomState={message.payload} />;
   }
 
   return <Loader />;

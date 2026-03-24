@@ -7,6 +7,7 @@ export * from "./interfaces/piece-type";
 
 export * from "./config/board-size";
 export * from "./config/coordinates";
+export * from "./config/distance";
 
 export * from "./messages/error";
 export * from "./messages/transactions";

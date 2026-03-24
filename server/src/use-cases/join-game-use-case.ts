@@ -39,17 +39,9 @@ export class JoinGameUseCase {
       `JoinGameUseCase: Player ${playerId} joined game room ${gameId}`,
     );
 
-    const player = gameRoom.getPlayer(playerId);
-
     return this.socket.emitToRoom(gameId, {
-      type: MESSAGES_TYPES.JOIN_GAME,
-      payload: {
-        player: {
-          id: player!.id,
-          color: player!.color.value,
-        },
-        gameState: gameRoom.getState(),
-      },
+      type: MESSAGES_TYPES.GAME_STATE,
+      payload: gameRoom.getState(),
     });
   }
 }

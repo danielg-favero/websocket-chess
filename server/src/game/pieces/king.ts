@@ -1,3 +1,5 @@
+import { calculateDistance } from "@helpers/calculate-distance";
+
 import { IColor } from "@interfaces/color";
 import { IPosition } from "@interfaces/position";
 import { IBoard } from "@interfaces/board";
@@ -10,6 +12,10 @@ export class King extends Piece {
   }
 
   canMove(from: IPosition, to: IPosition, board: IBoard): boolean {
-    return false;
+    if (!this.validateBaseMovement(from, to, board)) return false;
+
+    const { dx, dy } = calculateDistance(from, to);
+
+    return dx <= 1 && dy <= 1;
   }
 }

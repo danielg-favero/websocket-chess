@@ -25,6 +25,7 @@
             "@routes/*": ["routes/*"],
             "@lib/*": ["lib/*"],
             "@middlewares/*": ["middlewares/*"],
+            "@helpers/*": ["helpers/*"],
         },
     },
     "include": ["src/**/*"],
