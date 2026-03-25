@@ -29,7 +29,7 @@ export class SocketClient implements ISocketClient {
   }
 
   sendToClient(clientId: string, data: Record<string, any>) {
-    this.socket.to(clientId).emit("message", JSON.stringify(data));
+    this.socket.nsp.to(clientId).emit("message", JSON.stringify(data));
   }
 
   receive(event: string, callback: SocketMessageCallback) {

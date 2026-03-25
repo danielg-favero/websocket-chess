@@ -3,6 +3,7 @@ import { logger } from "@danielg.favero/websocket-chess-package";
 
 import { IGameRoom } from "@interfaces/game-room";
 import { IPosition } from "@interfaces/position";
+import { IPlayer } from "@interfaces/player";
 
 import { Game } from "@game/game";
 import { GameRoom } from "@game/game-room";
@@ -20,18 +21,22 @@ class GameRoomOrchestrator {
     return this.update(gameId, gameRoom);
   }
 
-  join(roomId: string, playerId: string): IGameRoom | null {
+  join(
+    roomId: string,
+    playerId: string,
+  ): { gameRoom: IGameRoom | null; player: IPlayer | null } {
     const room = this.get(roomId);
 
-    if (!room) return null;
-    if (room.isFull()) return null;
-    if (this.isJoined(roomId, playerId)) return null;
+    if (!room) return { gameRoom: null, player: null };
+    if (room.isFull()) return { gameRoom: null, player: null };
+    if (this.isJoined(roomId, playerId))
+      return { gameRoom: null, player: null };
 
     const newPlayer = new Player(playerId);
     room.addPlayer(newPlayer);
 
     logger.log(`ORCHESTRATOR: Player ${playerId} joined game room ${roomId}`);
-    return this.update(roomId, room);
+    return { gameRoom: this.update(roomId, room), player: newPlayer };
   }
 
   isJoined(roomId: string, playerId: string): boolean {

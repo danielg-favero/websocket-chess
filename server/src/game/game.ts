@@ -111,24 +111,4 @@ export class Game implements IGame {
   private switchTurn(): void {
     this.turn = this.turn.isWhite() ? Color.BLACK : Color.WHITE;
   }
-
-  getState(): IGameState {
-    return {
-      board: this.board.grid.map((row) =>
-        row.map((cell) => {
-          if (!cell) return null;
-          return {
-            type: cell.type,
-            color: cell.color.value,
-          };
-        }),
-      ),
-      status: this.status.getStatus(),
-      capturedPieces: {
-        white: this.capturedPieces.white.map((piece) => piece.type),
-        black: this.capturedPieces.black.map((piece) => piece.type),
-      },
-      turn: this.turn.value,
-    };
-  }
 }

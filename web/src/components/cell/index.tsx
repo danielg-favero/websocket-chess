@@ -1,8 +1,8 @@
-import type { HTMLAttributes } from "react";
+import type { ButtonHTMLAttributes } from "react";
 
 import "./cell.css";
 
-function Cell(props: HTMLAttributes<HTMLButtonElement>) {
+function Cell(props: ButtonHTMLAttributes<HTMLButtonElement>) {
   return <button {...props} className={`cell ${props.className}`} />;
 }
 

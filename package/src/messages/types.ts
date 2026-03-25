@@ -5,6 +5,7 @@ export const MESSAGES_TYPES = {
   CAPTURE: "CAPTURE",
   ERROR: "ERROR",
   GAME_STATE: "GAME_STATE",
+  PLAYER_STATE: "PLAYER_STATE",
 } as const;
 
 export type TMessageTypes =

@@ -1,7 +1,11 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
-import type { IGameRoomState } from "@danielg.favero/websocket-chess-package";
+import type {
+  IGameRoomState,
+  IPlayerState,
+} from "@danielg.favero/websocket-chess-package";
 
 import Board from "@components/board";
 import Loader from "@components/loader";
@@ -12,6 +16,11 @@ export default function GamePage() {
   const { gameId } = useParams();
   const navigate = useNavigate();
   const { isConnected, joinGame, message, connect } = useChessGame();
+
+  const [gameRoomState, setGameRoomState] = useState<IGameRoomState | null>(
+    null,
+  );
+  const [playerState, setPlayerState] = useState<IPlayerState | null>(null);
 
   useEffect(() => {
     if (!gameId) {
@@ -29,12 +38,26 @@ export default function GamePage() {
     joinGame(gameId);
   }, [isConnected, gameId]);
 
+  useEffect(() => {
+    if (!message) return;
+
+    if (message.type === "GAME_STATE") {
+      setGameRoomState(message.payload as IGameRoomState);
+    }
+  }, [message]);
+
+  useEffect(() => {
+    if (!message) return;
+
+    if (message.type === "PLAYER_STATE") {
+      setPlayerState(message.payload as IPlayerState);
+    }
+  }, [message]);
+
   if (!isConnected || !message) return <Loader />;
 
-  console.log({ message });
-
-  if (message.type === "GAME_STATE") {
-    return <Board gameRoomState={message.payload as IGameRoomState} />;
+  if (gameRoomState && playerState) {
+    return <Board gameRoomState={gameRoomState} playerState={playerState} />;
   }
 
   return <Loader />;

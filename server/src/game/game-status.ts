@@ -14,6 +14,10 @@ export class GameStatus implements IGameStatus {
     return this.status;
   }
 
+  setState(status: TGameStatus): void {
+    this.status = status;
+  }
+
   updateStatus(game: IGame): void {
     if (game.isCheckmate()) {
       this.status = "CHECKMATE";

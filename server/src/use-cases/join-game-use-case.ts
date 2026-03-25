@@ -18,9 +18,9 @@ export class JoinGameUseCase {
 
   public execute({ gameId }: IJoinGameUseCase) {
     const playerId = this.socket.clientId;
-    const gameRoom = this.orchestrator.join(gameId, playerId);
+    const { gameRoom, player } = this.orchestrator.join(gameId, playerId);
 
-    if (!gameRoom) {
+    if (!gameRoom || !player) {
       logger.error(
         `JoinGameUseCase: Could not join game room ${gameId} for player ${playerId}`,
       );
@@ -39,9 +39,14 @@ export class JoinGameUseCase {
       `JoinGameUseCase: Player ${playerId} joined game room ${gameId}`,
     );
 
-    return this.socket.emitToRoom(gameId, {
+    this.socket.emitToRoom(gameId, {
       type: MESSAGES_TYPES.GAME_STATE,
       payload: gameRoom.getState(),
+    });
+
+    this.socket.sendToClient(playerId, {
+      type: MESSAGES_TYPES.PLAYER_STATE,
+      payload: player.getState(),
     });
   }
 }

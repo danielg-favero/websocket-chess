@@ -5,5 +5,6 @@ export interface IGameStatus {
   status: TGameStatus;
 
   getStatus(): TGameStatus;
+  setState(status: TGameStatus): void;
   updateStatus(game: IGame): void;
 }

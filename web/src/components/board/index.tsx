@@ -1,4 +1,7 @@
-import type { Coordinates } from "@danielg.favero/websocket-chess-package";
+import type {
+  Coordinates,
+  IPlayerState,
+} from "@danielg.favero/websocket-chess-package";
 import type { IGameRoomState } from "@danielg.favero/websocket-chess-package";
 
 import { useCallback, useState } from "react";
@@ -12,9 +15,10 @@ import "./board.css";
 
 interface BoardProps {
   gameRoomState: IGameRoomState;
+  playerState: IPlayerState;
 }
 
-function Board({ gameRoomState }: BoardProps) {
+function Board({ gameRoomState, playerState }: BoardProps) {
   const { movePiece, capturePiece } = useChessGame();
   const [selectedCell, setSelectedCell] = useState<Coordinates | null>(null);
   const { gameState } = gameRoomState;
@@ -86,6 +90,7 @@ function Board({ gameRoomState }: BoardProps) {
                 key={`${y}-${x}`}
                 className={`${(y + x) % 2 === 0 ? "light" : "dark"} ${isCellSelected({ x, y }) ? "selected" : ""}`}
                 onClick={() => handleCellClick({ x, y })}
+                disabled={cell ? cell.color !== playerState.color : false}
               >
                 {cell && <Piece color={cell.color} type={cell.type} />}
               </Cell>

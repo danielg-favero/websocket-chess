@@ -13,7 +13,6 @@ export interface IGameRoom {
     white: IPlayer | null;
     black: IPlayer | null;
   };
-  status: TGameStatus;
 
   isFull(): boolean;
   addPlayer(player: IPlayer): void;

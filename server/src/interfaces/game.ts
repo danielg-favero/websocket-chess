@@ -23,6 +23,4 @@ export interface IGame {
   move(from: IPosition, to: IPosition): void;
   capture(from: IPosition, to: IPosition): void;
   isCheckmate(): boolean;
-
-  getState(): IGameState;
 }

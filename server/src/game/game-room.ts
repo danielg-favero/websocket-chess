@@ -8,6 +8,7 @@ import { IGame } from "@interfaces/game";
 import { IPlayer } from "@interfaces/player";
 
 import { Color } from "./color";
+import { GameState } from "./game-state";
 
 export class GameRoom implements IGameRoom {
   public game: IGame;
@@ -15,7 +16,6 @@ export class GameRoom implements IGameRoom {
     white: IPlayer | null;
     black: IPlayer | null;
   };
-  public status: TGameStatus;
 
   constructor(
     public id: string,
@@ -26,7 +26,6 @@ export class GameRoom implements IGameRoom {
       white: null,
       black: null,
     };
-    this.status = "NOT_STARTED";
   }
 
   isFull(): boolean {
@@ -42,19 +41,19 @@ export class GameRoom implements IGameRoom {
 
     player.setColor(new Color("BLACK"));
     this.players.black = player;
-    this.status = "PLAYING";
+    this.game.status.setState("PLAYING");
   }
 
   removePlayer(playerId: string): void {
     if (this.players.white?.id === playerId) {
       this.players.white = null;
-      this.status = "RESIGNED";
+      this.game.status.setState("RESIGNED");
       return;
     }
 
     if (this.players.black?.id === playerId) {
       this.players.black = null;
-      this.status = "RESIGNED";
+      this.game.status.setState("RESIGNED");
       return;
     }
   }
@@ -71,14 +70,16 @@ export class GameRoom implements IGameRoom {
   }
 
   getState(): IGameRoomState {
+    const gameState = new GameState(this.getGame());
+
     return {
       id: this.id,
-      gameState: this.game.getState(),
+      gameState: gameState.getState(),
       players: {
         white: this.players.white?.getState() || null,
         black: this.players.black?.getState() || null,
       },
-      status: this.status,
+      status: this.game.status.getStatus(),
     };
   }
 }

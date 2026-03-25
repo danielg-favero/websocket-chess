@@ -35,3 +35,11 @@
     border: 3px solid #679436;
     transition: none;
 }
+
+.cell:disabled {
+    cursor: not-allowed;
+}
+
+.cell:disabled span {
+    opacity: 1;
+}
