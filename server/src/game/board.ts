@@ -25,4 +25,12 @@ export class Board implements IBoard {
     this.grid[to.y][to.x] = piece;
     this.grid[from.y][from.x] = null;
   }
+
+  capture(from: IPosition, to: IPosition): void {
+    this.move(from, to);
+  }
+
+  initialize(): void {
+    throw new Error("Method 'initialize' must be implemented.");
+  }
 }

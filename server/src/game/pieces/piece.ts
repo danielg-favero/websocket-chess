@@ -1,10 +1,9 @@
 import {
   Coordinates,
+  TPieceStatus,
   TPieceType,
 } from "@danielg.favero/websocket-chess-package";
 import { Position } from "@game/position";
-
-import { calculateDistance } from "@helpers/calculate-distance";
 
 import { IBoard } from "@interfaces/board";
 import { IColor } from "@interfaces/color";
@@ -14,10 +13,16 @@ import { IPosition } from "@interfaces/position";
 export abstract class Piece implements IPiece {
   color: IColor;
   type: TPieceType;
+  status: TPieceStatus;
 
   constructor(color: IColor, type: TPieceType) {
     this.color = color;
     this.type = type;
+    this.status = "ACTIVE";
+  }
+
+  public setStatus(status: TPieceStatus): void {
+    this.status = status;
   }
 
   public abstract canMove(
@@ -25,6 +30,10 @@ export abstract class Piece implements IPiece {
     to: IPosition,
     board: IBoard,
   ): boolean;
+
+  canCapture(from: IPosition, to: IPosition, board: IBoard): boolean {
+    return this.canMove(from, to, board) && this.isEnemy(board.getPieceAt(to));
+  }
 
   validateBaseMovement(from: IPosition, to: IPosition, board: IBoard): boolean {
     const pathIsClear = this.isPathClear(from, to, board);

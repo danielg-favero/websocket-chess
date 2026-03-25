@@ -14,6 +14,11 @@ import {
   MovePieceUseCase,
   IMovePieceUseCase,
 } from "@use-cases/move-piece-use-case";
+import {
+  CapturePieceUseCase,
+  ICapturePieceUseCase,
+} from "@use-cases/capture-piece-use-case";
+
 import { SocketClient } from "@lib/socket-client";
 
 function isValidMessage(message: any): message is GenericMessageTransaction {
@@ -41,6 +46,12 @@ export function routeMessage(socket: Socket, rawMessage: string) {
       logger.log("WS Moving piece");
       const movePieceUseCase = new MovePieceUseCase(socketClient);
       return movePieceUseCase.execute(message.payload as IMovePieceUseCase);
+    case MESSAGES_TYPES.CAPTURE:
+      logger.log("WS Capturing piece");
+      const capturePieceUseCase = new CapturePieceUseCase(socketClient);
+      return capturePieceUseCase.execute(
+        message.payload as ICapturePieceUseCase,
+      );
     default:
       logger.log("WS Unknown message");
       return socketClient.send({

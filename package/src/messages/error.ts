@@ -4,6 +4,7 @@ export const ERROR_MESSAGES = {
 
   INVALID_POSITION: "Invalid position objects",
   INVALID_MOVE: "Invalid move for this piece",
+  INVALID_CAPTURE: "Invalid capture for this piece",
   POSITION_OUT_OF_BOARD: "Position out of board bounds",
   NO_PIECE_AT_SOURCE: "No piece at source position",
 

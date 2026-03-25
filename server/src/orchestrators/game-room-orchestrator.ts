@@ -65,6 +65,26 @@ class GameRoomOrchestrator {
     return this.update(roomId, room);
   }
 
+  capture(
+    roomId: string,
+    playerId: string,
+    from: IPosition,
+    to: IPosition,
+  ): IGameRoom | null {
+    const room = this.get(roomId);
+
+    if (!room) return null;
+    if (!this.isJoined(roomId, playerId)) return null;
+
+    const game = room.getGame();
+    game.capture(from, to);
+
+    logger.log(
+      `ORCHESTRATOR: Piece captured from (${from.x},${from.y}) to (${to.x},${to.y}) in game room ${roomId}`,
+    );
+    return this.update(roomId, room);
+  }
+
   get(roomId: string): IGameRoom | undefined {
     return this.gameRooms.get(roomId);
   }

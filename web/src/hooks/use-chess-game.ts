@@ -1,11 +1,20 @@
-import { MESSAGES_TYPES } from "@danielg.favero/websocket-chess-package";
+import {
+  MESSAGES_TYPES,
+  type Coordinates,
+} from "@danielg.favero/websocket-chess-package";
 
 import { useWebsocket } from "./use-websocket";
 
 interface MovePiecePayload {
   gameId: string;
-  from: { x: number; y: number };
-  to: { x: number; y: number };
+  from: Coordinates;
+  to: Coordinates;
+}
+
+interface CapturePiecePayload {
+  gameId: string;
+  from: Coordinates;
+  to: Coordinates;
 }
 
 export function useChessGame() {
@@ -19,9 +28,14 @@ export function useChessGame() {
     sendMessage({ type: MESSAGES_TYPES.MOVE, payload });
   };
 
+  const capturePiece = (payload: CapturePiecePayload) => {
+    sendMessage({ type: MESSAGES_TYPES.CAPTURE, payload });
+  };
+
   return {
     joinGame,
     movePiece,
+    capturePiece,
     ...webSocket,
   };
 }

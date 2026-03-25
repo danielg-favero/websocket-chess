@@ -1,6 +1,8 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 
+import type { IGameRoomState } from "@danielg.favero/websocket-chess-package";
+
 import Board from "@components/board";
 import Loader from "@components/loader";
 
@@ -32,7 +34,7 @@ export default function GamePage() {
   console.log({ message });
 
   if (message.type === "GAME_STATE") {
-    return <Board gameRoomState={message.payload} />;
+    return <Board gameRoomState={message.payload as IGameRoomState} />;
   }
 
   return <Loader />;

@@ -1,17 +1,22 @@
 import { TGameStatus } from "@danielg.favero/websocket-chess-package";
+import { IGame } from "@interfaces/game";
 
-export class GameStatus {
-  private status: TGameStatus;
+import { IGameStatus } from "@interfaces/game-status";
+
+export class GameStatus implements IGameStatus {
+  status: TGameStatus;
 
   constructor() {
     this.status = "NOT_STARTED";
   }
 
-  setStatus(status: TGameStatus): void {
-    this.status = status;
-  }
-
   getStatus(): TGameStatus {
     return this.status;
+  }
+
+  updateStatus(game: IGame): void {
+    if (game.isCheckmate()) {
+      this.status = "CHECKMATE";
+    }
   }
 }

@@ -7,4 +7,5 @@ export interface IBoard {
   place(piece: IPiece, position: IPosition): void;
   getPieceAt(position: IPosition): IPiece | null;
   move(from: IPosition, to: IPosition): void;
+  capture(from: IPosition, to: IPosition): void;
 }

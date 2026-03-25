@@ -1,6 +1,6 @@
 import {
   logger,
-  type MessageDTO,
+  type GenericMessageTransaction,
 } from "@danielg.favero/websocket-chess-package";
 
 import { useEffect, useState } from "react";
@@ -9,7 +9,9 @@ import { socket } from "@api/socket";
 
 export function useWebsocket() {
   const [isConnected, setIsConnected] = useState(socket.connected);
-  const [message, setMessage] = useState<MessageDTO | null>(null);
+  const [message, setMessage] = useState<GenericMessageTransaction | null>(
+    null,
+  );
 
   function connect() {
     socket.connect();
@@ -34,7 +36,7 @@ export function useWebsocket() {
     setMessage(JSON.parse(data));
   }
 
-  function sendMessage(data: MessageDTO) {
+  function sendMessage(data: GenericMessageTransaction) {
     socket.emit("message", JSON.stringify(data));
   }
 

@@ -15,14 +15,18 @@ interface BoardProps {
 }
 
 function Board({ gameRoomState }: BoardProps) {
-  const { movePiece } = useChessGame();
+  const { movePiece, capturePiece } = useChessGame();
   const [selectedCell, setSelectedCell] = useState<Coordinates | null>(null);
   const { gameState } = gameRoomState;
   const { board } = gameState;
 
   const handleCellClick = (coordinates: Coordinates) => {
     if (selectedCell) {
-      handleMovePiece(coordinates);
+      if (cellHasPiece(coordinates)) {
+        handleCapturePiece(coordinates);
+      } else {
+        handleMovePiece(coordinates);
+      }
     } else {
       handleCellSelect(coordinates);
     }
@@ -43,10 +47,28 @@ function Board({ gameRoomState }: BoardProps) {
     [selectedCell],
   );
 
+  const cellHasPiece = useCallback(
+    (coordinates: Coordinates) => {
+      return board[coordinates.y][coordinates.x] !== null;
+    },
+    [board],
+  );
+
   const handleMovePiece = (to: Coordinates) => {
     if (!selectedCell) return;
 
     movePiece({
+      gameId: gameRoomState.id,
+      from: selectedCell,
+      to,
+    });
+    setSelectedCell(null);
+  };
+
+  const handleCapturePiece = (to: Coordinates) => {
+    if (!selectedCell) return;
+
+    capturePiece({
       gameId: gameRoomState.id,
       from: selectedCell,
       to,
