@@ -1,6 +1,6 @@
 {
   "name": "@danielg.favero/websocket-chess-package",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Shared utils and types for frontend and backend",
   "type": "module",
   "main": "dist/index.js",
