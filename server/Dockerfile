@@ -28,7 +28,7 @@ COPY --from=build /usr/src/app/package*.json ./
 COPY --from=build /usr/src/app .
 
 # Expose the port your app runs on
-ENV PORT=8000
+ENV PORT=8080
 EXPOSE $PORT
 
 # Run the application using the non-root user (recommended for security)
