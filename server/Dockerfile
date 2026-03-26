@@ -35,4 +35,4 @@ EXPOSE $PORT
 USER node
 
 # Define the command to start your application
-CMD [ "node", "dist/index.js" ]
+CMD [ "node", "index.js" ]
