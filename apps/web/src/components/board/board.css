@@ -1,0 +1,21 @@
+.chess-board-container {
+    background: linear-gradient(145deg, #2c2416 0%, #1a1410 100%);
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.chess-board-wrapper {
+    background: #1a1410;
+    padding: 20px;
+    border-radius: 4px;
+}
+
+.chess-board {
+    display: grid;
+    grid-template-columns: repeat(8, 70px);
+    grid-template-rows: repeat(8, 70px);
+    border: 3px solid #8b6914;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}

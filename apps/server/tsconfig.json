@@ -1,0 +1,33 @@
+{
+    "compilerOptions": {
+        "target": "ES2020",
+        "module": "commonjs",
+        "moduleResolution": "node",
+
+        "strict": true,
+        "skipLibCheck": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+    
+        "outDir": "./dist",
+        "rootDir": "./src",
+
+        "baseUrl": "./src",
+        "paths": {
+            "@config/*": ["config/*"],
+            "@game/*": ["game/*"],
+            "@interfaces/*": ["interfaces/*"],
+            "@websocket/*": ["websocket/*"],
+            "@orchestrators/*": ["orchestrators/*"],
+            "@use-cases/*": ["use-cases/*"],
+            "@types/*": ["@types/*"],
+            "@builders/*": ["builders/*"],
+            "@routes/*": ["routes/*"],
+            "@lib/*": ["lib/*"],
+            "@middlewares/*": ["middlewares/*"],
+            "@helpers/*": ["helpers/*"],
+        },
+    },
+    "include": ["src/**/*"],
+    "exclude": ["node_modules", "dist"]
+}

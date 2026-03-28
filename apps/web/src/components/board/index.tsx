@@ -1,0 +1,105 @@
+import type {
+  Coordinates,
+  IPlayerState,
+  IGameRoomState,
+} from "@websocket-chess/shared";
+
+import { useCallback, useState } from "react";
+
+import Cell from "@components/cell";
+import Piece from "@components/piece";
+
+import { useChessGame } from "@hooks/use-chess-game";
+
+import "./board.css";
+
+interface BoardProps {
+  gameRoomState: IGameRoomState;
+  playerState: IPlayerState;
+}
+
+function Board({ gameRoomState, playerState }: BoardProps) {
+  const { movePiece, capturePiece } = useChessGame();
+  const [selectedCell, setSelectedCell] = useState<Coordinates | null>(null);
+  const { gameState } = gameRoomState;
+  const { board } = gameState;
+
+  const handleCellClick = (coordinates: Coordinates) => {
+    if (selectedCell) {
+      if (cellHasPiece(coordinates)) {
+        handleCapturePiece(coordinates);
+      } else {
+        handleMovePiece(coordinates);
+      }
+    } else {
+      handleCellSelect(coordinates);
+    }
+  };
+
+  const handleCellSelect = (coordinates: Coordinates) => {
+    setSelectedCell(coordinates);
+  };
+
+  const isCellSelected = useCallback(
+    (coordinates: Coordinates) => {
+      if (!selectedCell) return false;
+
+      return (
+        selectedCell.x === coordinates.x && selectedCell.y === coordinates.y
+      );
+    },
+    [selectedCell],
+  );
+
+  const cellHasPiece = useCallback(
+    (coordinates: Coordinates) => {
+      return board[coordinates.y][coordinates.x] !== null;
+    },
+    [board],
+  );
+
+  const handleMovePiece = (to: Coordinates) => {
+    if (!selectedCell) return;
+
+    movePiece({
+      gameId: gameRoomState.id,
+      from: selectedCell,
+      to,
+    });
+    setSelectedCell(null);
+  };
+
+  const handleCapturePiece = (to: Coordinates) => {
+    if (!selectedCell) return;
+
+    capturePiece({
+      gameId: gameRoomState.id,
+      from: selectedCell,
+      to,
+    });
+    setSelectedCell(null);
+  };
+
+  return (
+    <div className="chess-board-container">
+      <div className="chess-board-wrapper">
+        <div className="chess-board" id="board">
+          {board.map((row, y) =>
+            row.map((cell, x) => (
+              <Cell
+                key={`${y}-${x}`}
+                className={`${(y + x) % 2 === 0 ? "light" : "dark"} ${isCellSelected({ x, y }) ? "selected" : ""}`}
+                onClick={() => handleCellClick({ x, y })}
+                disabled={cell ? cell.color !== playerState.color : false}
+              >
+                {cell && <Piece color={cell.color} type={cell.type} />}
+              </Cell>
+            )),
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default Board;

@@ -2,3 +2,5 @@ excalidraw
 drawio
 md
 .npmrc
+.env
+.turbo

@@ -1,0 +1,45 @@
+.cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 48px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.cell:hover {
+    filter: brightness(1.1);
+    transform: scale(1.02);
+}
+
+.light {
+    background: linear-gradient(135deg, #f0d9b5 0%, #e8d4a8 100%);
+}
+
+.dark {
+    background: linear-gradient(135deg, #b58863 0%, #a47a5a 100%);
+}
+
+.cell::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 60%);
+    pointer-events: none;
+}
+
+.cell.selected {
+    border: 3px solid #679436;
+    transition: none;
+}
+
+.cell:disabled {
+    cursor: not-allowed;
+}
+
+.cell:disabled span {
+    opacity: 1;
+}
