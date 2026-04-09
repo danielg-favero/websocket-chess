@@ -14,5 +14,11 @@
     "test": {
       "dependsOn": ["^build"]
     }
+  },
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"]
+    }
   }
 }
