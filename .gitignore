@@ -4,3 +4,4 @@ md
 .npmrc
 .env
 .turbo
+node_modules

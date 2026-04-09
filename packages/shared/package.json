@@ -1,6 +1,6 @@
 {
   "name": "@websocket-chess/shared",
-  "version": "1.0.4",
+  "version": "1.0.0",
   "description": "Shared utils and types for frontend and backend",
   "type": "module",
   "main": "dist/index.js",
