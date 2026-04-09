@@ -12,6 +12,9 @@
       "persistent": true,
       "cache": false
     },
+    "start": {
+      "dependsOn": ["build"]
+    },
     "test": {
       "dependsOn": ["^build"]
     }
