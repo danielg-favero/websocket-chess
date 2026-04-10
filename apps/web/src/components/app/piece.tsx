@@ -1,8 +1,7 @@
 import type { HTMLAttributes } from "react";
 
 import type { TPieceType, TColorValue } from "@websocket-chess/shared";
-
-import "./piece.css";
+import { cn } from "@lib/utils";
 
 interface PieceProps extends Omit<HTMLAttributes<HTMLSpanElement>, "color"> {
   color: TColorValue;
@@ -32,7 +31,7 @@ function Piece(props: PieceProps) {
   const { color, type, ...rest } = props;
 
   return (
-    <span {...rest} className={`piece ${props.className}`}>
+    <span {...rest} className={cn("select-none", props.className)}>
       {PIECE_SYMBOLS[color][type]}
     </span>
   );

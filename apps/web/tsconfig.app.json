@@ -33,6 +33,7 @@
         "@hooks/*": ["hooks/*"],
         "@infra/*": ["infra/*"],
         "@presentation/*": ["presentation/*"],
+        "@lib/*": ["lib/*"],
     },
   },
   "include": ["src"]
