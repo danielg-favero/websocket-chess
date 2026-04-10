@@ -5,7 +5,11 @@ import {
   logger,
 } from "@websocket-chess/shared";
 
-import { joinSocketRoomUseCase } from "../../../container";
+import {
+  capturePieceUseCase,
+  joinSocketRoomUseCase,
+  movePieceUseCase,
+} from "../../../container";
 import { SocketClient } from "../client";
 import { handleSocketError } from "./error.handler";
 import { InvalidSocketMessageError } from "@shared/errors/invalid-socket-message";
@@ -27,7 +31,23 @@ export async function handleSocketMessage(
 
     if (message.type === CLIENT_EVENTS.JOIN_ROOM) {
       logger.log("WS JOIN ROOM");
-      await joinSocketRoomUseCase.execute({
+      return await joinSocketRoomUseCase.execute({
+        ...(message.payload as any),
+        socketClient: socket,
+      });
+    }
+
+    if (message.type === CLIENT_EVENTS.MOVE) {
+      logger.log("WS MOVE PIECE");
+      return await movePieceUseCase.execute({
+        ...(message.payload as any),
+        socketClient: socket,
+      });
+    }
+
+    if (message.type === CLIENT_EVENTS.CAPTURE) {
+      logger.log("WS CAPTURE PIECE");
+      return await capturePieceUseCase.execute({
         ...(message.payload as any),
         socketClient: socket,
       });

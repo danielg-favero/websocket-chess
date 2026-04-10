@@ -9,16 +9,15 @@ export default defineConfig({
   resolve: {
     alias: {
       "@components": path.resolve(__dirname, "./src/components"),
-      "@config": path.resolve(__dirname, "./src/config"),
-      "@hooks": path.resolve(__dirname, "./src/hooks"),
-      "@api": path.resolve(__dirname, "./src/api"),
-      "@pages": path.resolve(__dirname, "./src/pages"),
-      "@interfaces": path.resolve(__dirname, "./src/interfaces"),
+      "@data": path.resolve(__dirname, "./src/data"),
+      "@domain": path.resolve(__dirname, "./src/domain"),
       "@helpers": path.resolve(__dirname, "./src/helpers"),
-      "@lib": path.resolve(__dirname, "./src/lib"),
+      "@hooks": path.resolve(__dirname, "./src/hooks"),
+      "@infra": path.resolve(__dirname, "./src/infra"),
+      "@presentation": path.resolve(__dirname, "./src/presentation"),
     },
   },
   server: {
-    allowedHosts: ["morgan-pseudoamateurish-mia.ngrok-free.dev"],
+    allowedHosts: ["https://websocket-chess-dm3e.onrender.com"],
   },
 });

@@ -6,6 +6,7 @@ import {
   joinGameUseCase,
   startGameUseCase,
   findGameUseCase,
+  findPlayersByGameRoomIdUseCase,
 } from "container";
 
 const router = Router();
@@ -54,6 +55,18 @@ router.patch("/game/:gameRoomId/start", async (req, res) => {
   });
 
   res.status(201).json(gameRoom);
+});
+
+router.get("/game/:gameRoomId/players", async (req, res) => {
+  logger.log("HTTP GET /game/:gameRoomId/players");
+
+  const { gameRoomId } = req.params;
+
+  const players = await findPlayersByGameRoomIdUseCase.execute({
+    gameRoomId: String(gameRoomId),
+  });
+
+  res.status(201).json(players);
 });
 
 export default router;

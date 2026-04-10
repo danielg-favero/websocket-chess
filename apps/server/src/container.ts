@@ -3,6 +3,9 @@ import { JoinGameUseCase } from "@application/use-cases/join-game-use-case";
 import { StartGameUseCase } from "@application/use-cases/start-game-use-case";
 import { FindGameUseCase } from "@application/use-cases/find-game-use-case";
 import { JoinSocketRoomUseCase } from "@application/use-cases/join-socket-room-use-case";
+import { MovePieceUseCase } from "@application/use-cases/move-piece-use-case";
+import { CapturePieceUseCase } from "@application/use-cases/capture-piece-use-case";
+import { FindPlayersByGameRoomIdUseCase } from "@application/use-cases/find-players-by-game-room-id-use-case";
 
 import { InMemoryGameRoomRepository } from "@modules/game-room/repositories/in-memory-game-room-repository";
 import { InMemoryGameRepository } from "@modules/game/repositories/in-memory-game-repository";
@@ -16,6 +19,7 @@ import { FindGameService } from "@modules/game/services/find-game-service";
 import { ValidatePlayerNotInRoomService } from "@modules/game-room/services/validate-player-not-in-room";
 import { ValidatePlayerAlreadyInRoomService } from "@modules/game-room/services/validate-player-already-in-room";
 import { FindPlayerService } from "@modules/player/services/find-player-service";
+import { UpdateGameService } from "@modules/game/services/update-game-service";
 
 export const gameRoomRepository = new InMemoryGameRoomRepository();
 export const gameRepository = new InMemoryGameRepository();
@@ -36,6 +40,7 @@ export const validatePlayerNotInRoomService =
   new ValidatePlayerNotInRoomService(gameRoomRepository);
 export const validatePlayerAlreadyInRoomService =
   new ValidatePlayerAlreadyInRoomService(gameRoomRepository);
+export const updateGameService = new UpdateGameService(gameRepository);
 
 export const createGameUseCase = new CreateGameUseCase(
   createGameRoomService,
@@ -62,3 +67,20 @@ export const joinSocketRoomUseCase = new JoinSocketRoomUseCase(
   findPlayerService,
   validatePlayerNotInRoomService,
 );
+
+export const movePieceUseCase = new MovePieceUseCase(
+  findGameRoomService,
+  findGameService,
+  updateGameService,
+  validatePlayerNotInRoomService,
+);
+
+export const capturePieceUseCase = new CapturePieceUseCase(
+  findGameRoomService,
+  findGameService,
+  updateGameService,
+  validatePlayerNotInRoomService,
+);
+
+export const findPlayersByGameRoomIdUseCase =
+  new FindPlayersByGameRoomIdUseCase(findPlayerService, findGameRoomService);
