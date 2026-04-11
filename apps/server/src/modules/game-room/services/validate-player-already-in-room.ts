@@ -24,7 +24,7 @@ export class ValidatePlayerAlreadyInRoomService implements IValidatePlayerAlread
       gameRoom.getBlackPlayer() === playerId;
 
     if (isPlayerAlreadyInRoom) {
-      throw new PlayerAlreadyInGameRoomError();
+      throw new PlayerAlreadyInGameRoomError(playerId);
     }
   }
 }

@@ -13,7 +13,13 @@ import { FieldGroup } from "@components/ui/field";
 import type { IUseLobbyPageModel } from "./lobby-page.model";
 
 export default function LobbyPageView(methods: IUseLobbyPageModel) {
-  const { isCreatingGame, newGameForm, joinGameForm } = methods;
+  const {
+    isCreatingGame,
+    isJoiningGame,
+    newGameForm,
+    joinGameForm,
+    isConnected,
+  } = methods;
 
   return (
     <div className="flex h-screen w-screen items-center justify-center">
@@ -21,7 +27,8 @@ export default function LobbyPageView(methods: IUseLobbyPageModel) {
         <CardHeader>
           <CardTitle>Chess with Websocket</CardTitle>
           <CardDescription>
-            Create a new game and play with your friends
+            Create a new game or join an existing game and play with your
+            friends
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col items-center justify-center gap-2">
@@ -41,13 +48,16 @@ export default function LobbyPageView(methods: IUseLobbyPageModel) {
                   <newGameForm.AppField
                     name="nickname"
                     children={(field) => (
-                      <field.Input placeholder="Type your nickname" />
+                      <field.Input
+                        placeholder="Type your nickname"
+                        disabled={!isConnected}
+                      />
                     )}
                   />
                   <Button
                     variant="default"
                     size="lg"
-                    disabled={isCreatingGame}
+                    disabled={isCreatingGame || !isConnected}
                     type="submit"
                     className="w-full"
                   >
@@ -68,14 +78,20 @@ export default function LobbyPageView(methods: IUseLobbyPageModel) {
                   <joinGameForm.AppField
                     name="nickname"
                     children={(field) => (
-                      <field.Input placeholder="Type your nickname" />
+                      <field.Input
+                        placeholder="Type your nickname"
+                        disabled={!isConnected}
+                      />
                     )}
                   />
                   <FieldGroup className="flex justify-between items-center gap-2">
                     <joinGameForm.AppField
                       name="gameRoomId"
                       children={(field) => (
-                        <field.Input placeholder="Type the game code" />
+                        <field.Input
+                          placeholder="Type the game code"
+                          disabled={!isConnected}
+                        />
                       )}
                     />
                     <Button
@@ -83,7 +99,9 @@ export default function LobbyPageView(methods: IUseLobbyPageModel) {
                       type="submit"
                       size="lg"
                       className="w-full"
+                      disabled={isJoiningGame || !isConnected}
                     >
+                      {isJoiningGame && <Spinner />}
                       Join game
                     </Button>
                   </FieldGroup>

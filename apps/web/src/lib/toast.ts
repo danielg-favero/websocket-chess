@@ -3,6 +3,7 @@ import { toast as sonnerToast } from "sonner";
 export const toast = {
   success: (message: string) =>
     sonnerToast.success(`Success: ${message}`, {
+      id: message,
       position: "bottom-center",
       style: {
         "--normal-bg":
@@ -17,6 +18,7 @@ export const toast = {
     }),
   error: (message: string) =>
     sonnerToast.error(`Error: ${message}`, {
+      id: message,
       position: "bottom-center",
       style: {
         "--normal-bg":
@@ -28,6 +30,7 @@ export const toast = {
     }),
   warning: (message: string) =>
     sonnerToast.warning(`Warning: ${message}`, {
+      id: message,
       position: "bottom-center",
       style: {
         "--normal-bg":
@@ -40,6 +43,7 @@ export const toast = {
     }),
   info: (message: string) =>
     sonnerToast.info(`Info: ${message}`, {
+      id: message,
       position: "bottom-center",
       style: {
         "--normal-bg":

@@ -1,4 +1,4 @@
-import { TColorValue } from "@websocket-chess/shared";
+import { TColorValue, TGameStatus } from "@websocket-chess/shared";
 
 import { InvalidPositionError } from "../errors/invalid-position";
 import { OutOfBoundsError } from "../errors/out-of-bounds";
@@ -20,12 +20,14 @@ export class Game {
   board: Board;
   turn: Color;
   capturedPieces: Record<TColorValue, Piece[]>;
+  status: TGameStatus;
 
   constructor(id: string) {
     this.id = id;
     this.board = new DefaultBoard();
     this.turn = new Color("WHITE");
     this.capturedPieces = { WHITE: [], BLACK: [] };
+    this.status = "NOT_STARTED";
   }
 
   validateMovement(
@@ -111,6 +113,7 @@ export class Game {
       board: this.board.toJSON(),
       turn: this.turn.toJSON(),
       capturedPieces: this.capturedPieces,
+      status: this.status,
     };
   }
 }

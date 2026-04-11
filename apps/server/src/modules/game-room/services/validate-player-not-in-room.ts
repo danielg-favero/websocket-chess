@@ -21,7 +21,7 @@ export class ValidatePlayerNotInRoomService implements IValidatePlayerNotInRoomS
       gameRoom.getBlackPlayer() !== playerId;
 
     if (isPlayerNotInRoom) {
-      throw new PlayerNotInGameRoomError();
+      throw new PlayerNotInGameRoomError(playerId);
     }
   }
 }

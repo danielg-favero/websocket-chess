@@ -62,7 +62,7 @@ describe("JoinGameUseCase", () => {
     expect(whitePlayerJoinedGame.whitePlayerId).toEqual("1");
     expect(whitePlayerJoinedGame.blackPlayerId).toBeNull();
     expect(whitePlayerJoinedGame.isFull).toBeFalsy();
-    expect(whitePlayerJoinedGame.status).toEqual("NOT_STARTED");
+    expect(whitePlayerJoinedGame.status).toEqual("WAITING_OPPONENT");
   });
 
   it("Should add black player to a game", async () => {
@@ -91,7 +91,7 @@ describe("JoinGameUseCase", () => {
     expect(blackPlayerJoinedGame.whitePlayerId).toEqual("1");
     expect(blackPlayerJoinedGame.blackPlayerId).toEqual("2");
     expect(blackPlayerJoinedGame.isFull).toBeTruthy();
-    expect(blackPlayerJoinedGame.status).toEqual("NOT_STARTED");
+    expect(blackPlayerJoinedGame.status).toEqual("WAITING_GAME_START");
   });
 
   it("Should throw an error if the game room is full", async () => {

@@ -1,9 +1,37 @@
 import Board from "@components/app/board";
+import { Button } from "@components/ui/button";
 
-export default function GamePageView() {
+import type { IUseGamePageModel } from "./game-page.model";
+import GameRoomStatusBlockScreen from "./components/game-room-status-block-screen";
+
+export default function GamePageView({
+  game,
+  gameRoom,
+  player,
+  startGame,
+}: IUseGamePageModel) {
+  if (!game) return null;
+  if (!gameRoom) return null;
+  if (!player) return null;
+
+  const canStartGame = !!gameRoom.whitePlayerId && !!gameRoom.blackPlayerId;
+
   return (
-    <div className="flex h-screen w-screen items-center justify-center">
-      <Board />
-    </div>
+    <>
+      <div className="flex flex-col gap-4 h-screen w-screen items-center justify-center">
+        <GameRoomStatusBlockScreen status={gameRoom.status} />
+        <Board board={game.board} game={game} player={player} />
+        {gameRoom.status === "WAITING_GAME_START" && (
+          <Button
+            size="lg"
+            onClick={() => startGame()}
+            disabled={!canStartGame}
+            className="absolute z-40 bottom-5 left-1/2 -translate-x-1/2"
+          >
+            Start Game
+          </Button>
+        )}
+      </div>
+    </>
   );
 }

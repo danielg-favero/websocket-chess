@@ -1,4 +1,4 @@
-import type { TGameStatus } from "@websocket-chess/shared";
+import type { TGameRoomStatus } from "@websocket-chess/shared";
 
 export interface GameRoom {
   id: string;
@@ -6,5 +6,5 @@ export interface GameRoom {
   whitePlayerId: string | null;
   blackPlayerId: string | null;
   isFull: boolean;
-  status: TGameStatus;
+  status: TGameRoomStatus;
 }

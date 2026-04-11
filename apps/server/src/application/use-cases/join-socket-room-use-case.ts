@@ -42,10 +42,12 @@ export class JoinSocketRoomUseCase {
     });
 
     socketClient.joinRoom(gameRoom.id);
-    socketClient.sendToClient(
+    socketClient.emitToRoom(
+      gameRoom.id,
       createMessage(SERVER_EVENTS.GAME_STATE, game.toJSON()),
     );
-    socketClient.sendToClient(
+    socketClient.emitToRoom(
+      gameRoom.id,
       createMessage(SERVER_EVENTS.GAME_ROOM_STATE, gameRoom.toJSON()),
     );
     socketClient.sendToClient(

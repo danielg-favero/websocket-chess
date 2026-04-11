@@ -8,7 +8,7 @@ interface PieceProps extends Omit<HTMLAttributes<HTMLSpanElement>, "color"> {
   type: TPieceType;
 }
 
-const PIECE_SYMBOLS = {
+const PIECE_SYMBOLS: Record<TColorValue, Record<TPieceType, string>> = {
   WHITE: {
     KING: "♔",
     QUEEN: "♕",

@@ -34,24 +34,12 @@ router.patch("/game/:gameRoomId/join", async (req, res) => {
   logger.log("HTTP PATCH /game/:gameRoomId/join");
 
   const { gameRoomId } = req.params;
-  const { nickname, id } = req.body;
+  const { playerNickname, playerId } = req.body;
 
   const gameRoom = await joinGameUseCase.execute({
     gameRoomId: String(gameRoomId),
-    playerNickname: String(nickname),
-    playerId: String(id),
-  });
-
-  res.status(201).json(gameRoom);
-});
-
-router.patch("/game/:gameRoomId/start", async (req, res) => {
-  logger.log("HTTP PATCH /game/:gameRoomId/start");
-
-  const { gameRoomId } = req.params;
-
-  const gameRoom = await startGameUseCase.execute({
-    gameRoomId: String(gameRoomId),
+    playerNickname: String(playerNickname),
+    playerId: String(playerId),
   });
 
   res.status(201).json(gameRoom);

@@ -1,30 +1,62 @@
-import { useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+
+import type { ICreateGameRoomService } from "@data/services/create-game-service.types";
+import type {
+  IJoinGameService,
+  JoinGamePayload,
+} from "@data/services/join-game-service.types";
 
 import { useAppForm } from "@hooks/use-field-context";
-import type { ICreateGameRoomService } from "@data/services/create-game-service.types";
-import type { ISocketClient } from "@infra/socket/types";
 
 import type { ICurrentPlayerStore } from "@presentation/stores/current-player.store";
 
 import { LOBBY_PAGE_KEYS } from "./lobby-page.keys";
-import { joinGameSchema, newGameSchema } from "./lobby-page.schemas";
+import {
+  joinGameSchema,
+  newGameSchema,
+  type JoinGameSchema,
+} from "./lobby-page.schemas";
 
 interface IUseLobbyPageModelParams {
   createGameService: ICreateGameRoomService;
-  socketClient: ISocketClient;
+  joinGameService: IJoinGameService;
   currentPlayerStore: ICurrentPlayerStore;
 }
 
 export const useLobbyPageModel = ({
   createGameService,
-  socketClient,
+  joinGameService,
   currentPlayerStore,
 }: IUseLobbyPageModelParams) => {
+  const navigate = useNavigate();
+
   const { mutateAsync: createGame, isPending: isCreatingGame } = useMutation({
     mutationKey: LOBBY_PAGE_KEYS.CREATE_GAME,
     mutationFn: () => createGameService.execute(),
   });
+
+  const { mutateAsync: joinGame, isPending: isJoiningGame } = useMutation({
+    mutationKey: LOBBY_PAGE_KEYS.JOIN_GAME,
+    onSuccess: (response) => {
+      navigate(`/game/${response.id}`);
+    },
+    mutationFn: (payload: JoinGamePayload) => joinGameService.execute(payload),
+  });
+
+  const handleJoinGame = async (payload: JoinGameSchema) => {
+    const parsedValues = joinGameSchema.safeParse(payload);
+
+    if (!parsedValues.success || !currentPlayerStore.player?.id) {
+      return;
+    }
+
+    await joinGame({
+      gameRoomId: parsedValues.data.gameRoomId,
+      playerNickname: parsedValues.data.nickname,
+      playerId: currentPlayerStore.player.id,
+    });
+  };
 
   const newGameForm = useAppForm({
     defaultValues: {
@@ -34,8 +66,8 @@ export const useLobbyPageModel = ({
       onSubmit: newGameSchema,
     },
     onSubmit: async ({ value }) => {
-      console.log(value);
-      await createGame();
+      const { id } = await createGame();
+      await handleJoinGame({ gameRoomId: id, nickname: value.nickname });
     },
   });
 
@@ -47,30 +79,15 @@ export const useLobbyPageModel = ({
     validators: {
       onSubmit: joinGameSchema,
     },
-    onSubmit: ({ value }) => {
-      console.log(value);
+    onSubmit: async ({ value }) => {
+      await handleJoinGame(value);
     },
   });
 
-  useEffect(() => {
-    socketClient.connect();
-
-    socketClient.onConnect(() => {
-      currentPlayerStore.setId(socketClient.clientId!);
-    });
-
-    socketClient.onDisconnect(() => {
-      currentPlayerStore.setId(null);
-    });
-
-    return () => {
-      socketClient.disconnect();
-    };
-  }, []);
-
   return {
-    createGame,
+    isConnected: !!currentPlayerStore.player?.id,
     isCreatingGame,
+    isJoiningGame,
     newGameForm,
     joinGameForm,
   };

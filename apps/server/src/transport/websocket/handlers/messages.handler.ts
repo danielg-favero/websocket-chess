@@ -9,6 +9,7 @@ import {
   capturePieceUseCase,
   joinSocketRoomUseCase,
   movePieceUseCase,
+  startGameUseCase,
 } from "../../../container";
 import { SocketClient } from "../client";
 import { handleSocketError } from "./error.handler";
@@ -32,6 +33,14 @@ export async function handleSocketMessage(
     if (message.type === CLIENT_EVENTS.JOIN_ROOM) {
       logger.log("WS JOIN ROOM");
       return await joinSocketRoomUseCase.execute({
+        ...(message.payload as any),
+        socketClient: socket,
+      });
+    }
+
+    if (message.type === CLIENT_EVENTS.START_GAME) {
+      logger.log("WS START GAME");
+      return await startGameUseCase.execute({
         ...(message.payload as any),
         socketClient: socket,
       });

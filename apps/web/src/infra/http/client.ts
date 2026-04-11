@@ -1,7 +1,9 @@
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 import type { AxiosInstance, AxiosResponse } from "axios";
 
 import type { IHTTPClient, HTTPRequest } from "./types";
+
+import { ApiError } from "@domain/errors/http/api-error";
 
 export class HTTPClient implements IHTTPClient {
   private client: AxiosInstance;
@@ -20,14 +22,23 @@ export class HTTPClient implements IHTTPClient {
   ): Promise<AxiosResponse<TResponse>> {
     const { method, endpoint, body, headers, params } = request;
 
-    const response = await this.client.request<TResponse>({
-      method,
-      url: `${this.baseUrl}${endpoint}`,
-      data: body,
-      headers,
-      params,
-    });
+    try {
+      const response = await this.client.request<TResponse>({
+        method,
+        url: `${this.baseUrl}${endpoint}`,
+        data: body,
+        headers,
+        params,
+      });
 
-    return response;
+      return response;
+    } catch (error) {
+      if (isAxiosError(error)) {
+        const message = error.response?.data?.error || error.message;
+        throw new ApiError(message);
+      }
+
+      throw error;
+    }
   }
 }

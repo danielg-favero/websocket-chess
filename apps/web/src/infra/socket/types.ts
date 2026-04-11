@@ -4,10 +4,6 @@ import type {
   GenericEventTransaction,
 } from "@websocket-chess/shared";
 
-export type SocketEventHandler<T extends TServerEvents> = (
-  data: GenericEventTransaction<T>,
-) => void;
-
 export interface ISocketClient {
   clientId: string | null;
 
@@ -17,12 +13,20 @@ export interface ISocketClient {
 
   send<T extends TClientEvents>(message: GenericEventTransaction<T>): void;
 
-  on<T extends TServerEvents>(event: T, handler: SocketEventHandler<T>): void;
-  off<T extends TServerEvents>(event: T, handler: SocketEventHandler<T>): void;
+  on(
+    event: string,
+    handler: (data: GenericEventTransaction<TServerEvents>) => void,
+  ): void;
+  off(
+    event: string,
+    handler: (data: GenericEventTransaction<TServerEvents>) => void,
+  ): void;
 
   onConnect(handler: VoidFunction): void;
+  onConnectError(handler: (error: Error) => void): void;
   onDisconnect(handler: VoidFunction): void;
 
   offConnect(handler: VoidFunction): void;
+  offConnectError(handler: (error: Error) => void): void;
   offDisconnect(handler: VoidFunction): void;
 }

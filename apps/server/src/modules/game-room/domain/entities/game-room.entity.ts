@@ -1,4 +1,4 @@
-import { TGameStatus } from "@websocket-chess/shared";
+import { TGameRoomStatus } from "@websocket-chess/shared";
 
 import { GameRoomIsFullError } from "../errors/game-room-is-full";
 import { WhitePlayerNotFoundError } from "../errors/white-player-not-found";
@@ -13,7 +13,7 @@ export class GameRoom {
   blackPlayerId: string | null;
 
   isFull: boolean;
-  status: TGameStatus;
+  status: TGameRoomStatus;
 
   constructor(id: string, gameId: string) {
     this.id = id;
@@ -22,7 +22,7 @@ export class GameRoom {
     this.whitePlayerId = null;
     this.blackPlayerId = null;
 
-    this.status = "NOT_STARTED";
+    this.status = "CREATED";
     this.isFull = false;
   }
 
@@ -33,8 +33,10 @@ export class GameRoom {
 
     if (!this.whitePlayerId) {
       this.setWhitePlayer(playerId);
+      this.status = "WAITING_OPPONENT";
     } else {
       this.setBlackPlayer(playerId);
+      this.status = "WAITING_GAME_START";
     }
   }
 
@@ -81,7 +83,7 @@ export class GameRoom {
       throw new BlackPlayerNotFoundError();
     }
 
-    this.status = "PLAYING";
+    this.status = "STARTED";
   }
 
   public toJSON() {

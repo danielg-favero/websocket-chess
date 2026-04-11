@@ -3,6 +3,7 @@ export const CLIENT_EVENTS = {
   LEAVE_ROOM: "CLIENT_EVENT:LEAVE_ROOM",
   MOVE: "CLIENT_EVENT:MOVE",
   CAPTURE: "CLIENT_EVENT:CAPTURE",
+  START_GAME: "CLIENT_EVENT:START_GAME",
 } as const;
 
 export type TClientEvents = (typeof CLIENT_EVENTS)[keyof typeof CLIENT_EVENTS];

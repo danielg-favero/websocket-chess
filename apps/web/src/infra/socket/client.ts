@@ -6,7 +6,10 @@ import type {
   GenericEventTransaction,
 } from "@websocket-chess/shared";
 
-import type { ISocketClient, SocketEventHandler } from "./types";
+import type { ISocketClient } from "./types";
+
+import { SocketError } from "@domain/errors/socket/socket-error";
+import { ConnectionError } from "@domain/errors/socket/connection-error";
 
 export class SocketClient implements ISocketClient {
   private client: Socket;
@@ -18,9 +21,14 @@ export class SocketClient implements ISocketClient {
   ) {
     this.client = io(url, {
       autoConnect: false,
+      reconnectionAttempts: 1,
       path,
     });
     this.clientId = null;
+  }
+
+  getInstance(): ISocketClient {
+    return this;
   }
 
   connect(): void {
@@ -39,20 +47,32 @@ export class SocketClient implements ISocketClient {
     this.client.emit("message", JSON.stringify(message));
   }
 
-  on<T extends TServerEvents>(event: T, handler: SocketEventHandler<T>): void {
-    this.client.on(event as string, (data: string) => {
+  on(
+    event: string,
+    handler: (data: GenericEventTransaction<TServerEvents>) => void,
+  ): void {
+    this.client.on(event, (data: string) => {
       handler(JSON.parse(data));
     });
   }
 
-  off<T extends TServerEvents>(event: T, handler: SocketEventHandler<T>): void {
-    this.client.off(event as string, handler);
+  off(
+    event: string,
+    handler: (data: GenericEventTransaction<TServerEvents>) => void,
+  ): void {
+    this.client.off(event, handler);
   }
 
   onConnect(handler: VoidFunction): void {
     this.client.on("connect", () => {
       this.clientId = this.client.id!;
       handler();
+    });
+  }
+
+  onConnectError(handler: (error: SocketError) => void): void {
+    this.client.on("connect_error", () => {
+      handler(new ConnectionError());
     });
   }
 
@@ -70,4 +90,10 @@ export class SocketClient implements ISocketClient {
   offDisconnect(handler: VoidFunction): void {
     this.client.off("disconnect", handler);
   }
+
+  offConnectError(handler: (error: Error) => void): void {
+    this.client.off("connect_error", handler);
+  }
 }
+
+export const socketClient = new SocketClient();

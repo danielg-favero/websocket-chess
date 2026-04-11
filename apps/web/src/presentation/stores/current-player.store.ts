@@ -9,6 +9,7 @@ interface ICurrentPlayerStoreActions {
   setId: (id: string | null) => void;
   setNickname: (nickname: string) => void;
   setColor: (color: string) => void;
+  setPlayer: (player: Player) => void;
 }
 
 export interface ICurrentPlayerStore
@@ -37,4 +38,6 @@ export const useCurrentPlayer = create<ICurrentPlayerStore>((set) => ({
         color,
       } as Player,
     })),
+
+  setPlayer: (player: Player) => set({ player }),
 }));

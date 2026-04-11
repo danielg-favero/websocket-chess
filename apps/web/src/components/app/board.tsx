@@ -1,7 +1,17 @@
+import type { Board as TBoard, Game as TGame } from "@domain/models/game-model";
+import type { Player as TPlayer } from "@domain/models/player.model";
+
 import Cell from "./cell";
 import Piece from "./piece";
 
-function Board() {
+interface IBoardProps {
+  board: TBoard;
+  game: TGame;
+  player: TPlayer;
+}
+
+function Board({ board, game, player }: IBoardProps) {
+  console.log({ board, game, player });
   return (
     <div
       className="
@@ -15,106 +25,25 @@ function Board() {
         <div
           className="
             grid
-            grid-cols-[repeat(8,70px)]
-            grid-rows-[repeat(8,70px)]
+            grid-cols-[repeat(8,60px)]
+            grid-rows-[repeat(8,60px)]
             border-[3px] border-[#8b6914]
             shadow-[0_10px_40px_rgba(0,0,0,0.4)]
           "
         >
-          {/* Row 0 - Black major pieces */}
-          <Cell className="bg-[linear-gradient(135deg,#f0d9b5_0%,#e8d4a8_100%)]">
-            <Piece color="BLACK" type="ROOK" />
-          </Cell>
-          <Cell className="bg-[linear-gradient(135deg,#b58863_0%,#a47a5a_100%)]">
-            <Piece color="BLACK" type="KNIGHT" />
-          </Cell>
-          <Cell className="bg-[linear-gradient(135deg,#f0d9b5_0%,#e8d4a8_100%)]">
-            <Piece color="BLACK" type="BISHOP" />
-          </Cell>
-          <Cell className="bg-[linear-gradient(135deg,#b58863_0%,#a47a5a_100%)]">
-            <Piece color="BLACK" type="QUEEN" />
-          </Cell>
-          <Cell className="bg-[linear-gradient(135deg,#f0d9b5_0%,#e8d4a8_100%)]">
-            <Piece color="BLACK" type="KING" />
-          </Cell>
-          <Cell className="bg-[linear-gradient(135deg,#b58863_0%,#a47a5a_100%)]">
-            <Piece color="BLACK" type="BISHOP" />
-          </Cell>
-          <Cell className="bg-[linear-gradient(135deg,#f0d9b5_0%,#e8d4a8_100%)]">
-            <Piece color="BLACK" type="KNIGHT" />
-          </Cell>
-          <Cell className="bg-[linear-gradient(135deg,#b58863_0%,#a47a5a_100%)]">
-            <Piece color="BLACK" type="ROOK" />
-          </Cell>
-
-          {/* Row 1 - Black pawns */}
-          {Array.from({ length: 8 }).map((_, i) => (
-            <Cell
-              key={`bp-${i}`}
-              className={
-                i % 2 === 0
-                  ? "bg-[linear-gradient(135deg,#b58863_0%,#a47a5a_100%)]"
-                  : "bg-[linear-gradient(135deg,#f0d9b5_0%,#e8d4a8_100%)]"
-              }
-            >
-              <Piece color="BLACK" type="PAWN" />
-            </Cell>
-          ))}
-
-          {/* Rows 2–5 empty */}
-          {Array.from({ length: 32 }).map((_, i) => {
-            const isLight = Math.floor(i / 8) % 2 === i % 2;
-            return (
+          {board.grid.map((row, y) =>
+            row.map((cell, x) => (
               <Cell
-                key={`empty-${i}`}
-                className={
-                  isLight
-                    ? "bg-[linear-gradient(135deg,#f0d9b5_0%,#e8d4a8_100%)]"
-                    : "bg-[linear-gradient(135deg,#b58863_0%,#a47a5a_100%)]"
+                key={`${y}-${x}`}
+                className={`${(y + x) % 2 === 0 ? "bg-[linear-gradient(135deg,#f0d9b5_0%,#e8d4a8_100%)]" : "bg-[linear-gradient(135deg,#b58863_0%,#a07150_100%)]"}`}
+                disabled={
+                  player.color ? game.turn.value !== player.color.value : false
                 }
-              />
-            );
-          })}
-
-          {/* Row 6 - White pawns */}
-          {Array.from({ length: 8 }).map((_, i) => (
-            <Cell
-              key={`wp-${i}`}
-              className={
-                i % 2 === 0
-                  ? "bg-[linear-gradient(135deg,#f0d9b5_0%,#e8d4a8_100%)]"
-                  : "bg-[linear-gradient(135deg,#b58863_0%,#a47a5a_100%)]"
-              }
-            >
-              <Piece color="WHITE" type="PAWN" />
-            </Cell>
-          ))}
-
-          {/* Row 7 - White major pieces */}
-          <Cell className="bg-[linear-gradient(135deg,#b58863_0%,#a47a5a_100%)]">
-            <Piece color="WHITE" type="ROOK" />
-          </Cell>
-          <Cell className="bg-[linear-gradient(135deg,#f0d9b5_0%,#e8d4a8_100%)]">
-            <Piece color="WHITE" type="KNIGHT" />
-          </Cell>
-          <Cell className="bg-[linear-gradient(135deg,#b58863_0%,#a47a5a_100%)]">
-            <Piece color="WHITE" type="BISHOP" />
-          </Cell>
-          <Cell className="bg-[linear-gradient(135deg,#f0d9b5_0%,#e8d4a8_100%)]">
-            <Piece color="WHITE" type="QUEEN" />
-          </Cell>
-          <Cell className="bg-[linear-gradient(135deg,#b58863_0%,#a47a5a_100%)]">
-            <Piece color="WHITE" type="KING" />
-          </Cell>
-          <Cell className="bg-[linear-gradient(135deg,#f0d9b5_0%,#e8d4a8_100%)]">
-            <Piece color="WHITE" type="BISHOP" />
-          </Cell>
-          <Cell className="bg-[linear-gradient(135deg,#b58863_0%,#a47a5a_100%)]">
-            <Piece color="WHITE" type="KNIGHT" />
-          </Cell>
-          <Cell className="bg-[linear-gradient(135deg,#f0d9b5_0%,#e8d4a8_100%)]">
-            <Piece color="WHITE" type="ROOK" />
-          </Cell>
+              >
+                {cell && <Piece color={cell.color.value} type={cell.type} />}
+              </Cell>
+            )),
+          )}
         </div>
       </div>
     </div>

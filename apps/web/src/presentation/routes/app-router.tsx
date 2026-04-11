@@ -8,7 +8,7 @@ export default function AppRouter() {
     <Router>
       <Routes>
         <Route path="/" element={<LobbyPage />} />
-        <Route path="/game/:gameId" element={<GamePage />} />
+        <Route path="/game/:gameRoomId" element={<GamePage />} />
       </Routes>
     </Router>
   );
