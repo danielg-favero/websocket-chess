@@ -4,8 +4,10 @@ import { JoinGameRoomService } from "@data/services/join-game-room-service";
 import { StartGameService } from "@data/services/start-game-service";
 import { MovePieceService } from "@data/services/move-piece-service";
 import { CapturePieceService } from "@data/services/capture-piece-service";
+import { GetPlayersService } from "@data/services/get-players-service";
 
 import { socketClient } from "@infra/socket/instance";
+import { HTTPClient } from "@infra/http/client";
 
 import { useGame } from "@presentation/stores/game-store";
 import { useGameRoom } from "@presentation/stores/game-room-store";
@@ -14,10 +16,13 @@ import { useCurrentPlayer } from "@presentation/stores/current-player.store";
 import { useGamePageModel } from "./game-page.model";
 import GamePageView from "./game-page.view";
 
+const httpClient = new HTTPClient();
+
 const joinGameRoomService = new JoinGameRoomService(socketClient);
 const startGameService = new StartGameService(socketClient);
 const movePieceService = new MovePieceService(socketClient);
 const capturePieceService = new CapturePieceService(socketClient);
+const getPlayersService = new GetPlayersService(httpClient);
 
 export default function GamePageViewModel() {
   const { gameRoomId } = useParams();
@@ -36,6 +41,7 @@ export default function GamePageViewModel() {
     startGameService,
     movePieceService,
     capturePieceService,
+    getPlayersService,
   });
 
   return <GamePageView {...methods} />;

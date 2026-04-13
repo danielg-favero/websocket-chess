@@ -1,3 +1,5 @@
+import { useQuery } from "@tanstack/react-query";
+
 import { useEffect } from "react";
 import { SERVER_EVENTS, type Coordinates } from "@websocket-chess/shared";
 import { toast } from "@lib/toast";
@@ -6,12 +8,17 @@ import type { IJoinGameRoomService } from "@data/services/join-game-room-service
 import type { IStartGameService } from "@data/services/start-game-service.types";
 import type { IMovePieceService } from "@data/services/move-piece-service.types";
 import type { ICapturePieceService } from "@data/services/capture-piece-service.types";
+import type {
+  GetPlayersResponse,
+  IGetPlayersService,
+} from "@data/services/get-players-service.types";
 
 import type { ISocketClient } from "@infra/socket/types";
 
 import type { ICurrentPlayerStore } from "@presentation/stores/current-player.store";
 import type { IGameRoomStore } from "@presentation/stores/game-room-store";
 import type { IGameStore } from "@presentation/stores/game-store";
+import { GAME_PAGE_KEYS } from "./lobby-page.keys";
 
 interface IUseGamePageModelParams {
   gameStore: IGameStore;
@@ -22,6 +29,7 @@ interface IUseGamePageModelParams {
   startGameService: IStartGameService;
   movePieceService: IMovePieceService;
   capturePieceService: ICapturePieceService;
+  getPlayersService: IGetPlayersService;
   gameRoomId: string;
 }
 
@@ -34,6 +42,7 @@ export const useGamePageModel = ({
   joinGameRoomService,
   startGameService,
   capturePieceService,
+  getPlayersService,
   movePieceService,
 }: IUseGamePageModelParams) => {
   useEffect(() => {
@@ -56,6 +65,12 @@ export const useGamePageModel = ({
       }
     });
   }, []);
+
+  const { data: joinedPlayers, isLoading: isLoadingPlayers } =
+    useQuery<GetPlayersResponse>({
+      queryKey: GAME_PAGE_KEYS.GET_PLAYERS,
+      queryFn: () => getPlayersService.execute({ gameRoomId }),
+    });
 
   const handleMovePiece = (from: Coordinates, to: Coordinates) => {
     movePieceService.execute({
@@ -89,6 +104,8 @@ export const useGamePageModel = ({
     startGame: () => startGameService.execute({ gameRoomId }),
     movePiece: handleMovePiece,
     capturePiece: handleCapturePiece,
+    joinedPlayers,
+    isLoadingPlayers,
   };
 };
 
