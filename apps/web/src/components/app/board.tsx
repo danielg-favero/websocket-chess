@@ -45,18 +45,19 @@ function Board({ board, game, player, onMove, onCapture }: IBoardProps) {
     <div
       className="
         bg-[linear-gradient(145deg,#2c2416_0%,#1a1410_100%)]
-        p-10
+        p-4 sm:p-10
         rounded-lg
         shadow-[0_20px_60px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.1)]
+        w-fit
       "
     >
-      <div className="bg-[#1a1410] p-5 rounded">
+      <div className="bg-[#1a1410] p-2 sm:p-5 rounded">
         <div
           className="
             grid
-            grid-cols-[repeat(8,60px)]
-            grid-rows-[repeat(8,60px)]
-            border-[3px] border-[#8b6914]
+            grid-cols-[repeat(8,var(--cell-size))]
+            grid-rows-[repeat(8,var(--cell-size))]
+            border-2 sm:border-[3px] border-[#8b6914]
             shadow-[0_10px_40px_rgba(0,0,0,0.4)]
           "
         >

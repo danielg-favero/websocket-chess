@@ -11,7 +11,7 @@ function Cell({
       {...props}
       className={cn(
         "flex items-center justify-center",
-        "text-[36px]",
+        "text-(--cell-font-size)",
         "relative",
         "transition-all duration-300 ease-in-out",
         "hover:brightness-110 hover:scale-[1.02]",

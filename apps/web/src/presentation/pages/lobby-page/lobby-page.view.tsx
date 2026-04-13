@@ -22,8 +22,8 @@ export default function LobbyPageView(methods: IUseLobbyPageModel) {
   } = methods;
 
   return (
-    <div className="flex h-screen w-screen items-center justify-center">
-      <Card className="w-96">
+    <div className="flex min-h-screen w-screen items-center justify-center p-4">
+      <Card className="w-full max-w-100">
         <CardHeader>
           <CardTitle>Chess with Websocket</CardTitle>
           <CardDescription>

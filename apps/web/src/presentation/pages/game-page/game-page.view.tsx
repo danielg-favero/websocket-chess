@@ -22,14 +22,14 @@ export default function GamePageView({
 
   return (
     <>
-      <div className="flex flex-col gap-4 h-screen w-screen items-center justify-center">
+      <div className="flex flex-col gap-4 min-h-screen w-screen items-center justify-center p-4">
         <GameRoomStatusBlockScreen status={gameRoom.status} />
         {gameRoom.status === "WAITING_GAME_START" && (
           <Button
             size="lg"
             onClick={() => startGame()}
             disabled={!canStartGame}
-            className="absolute z-40 bottom-5 left-1/2 -translate-x-1/2"
+            className="fixed z-40 bottom-5 left-1/2 -translate-x-1/2 shadow-lg"
           >
             Start Game
           </Button>

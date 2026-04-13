@@ -80,6 +80,8 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --cell-size: clamp(35px, 10vw, 60px);
+  --cell-font-size: calc(var(--cell-size) * 0.6);
 }
 
 .dark {
