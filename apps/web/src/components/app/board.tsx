@@ -1,17 +1,46 @@
-import type { Board as TBoard, Game as TGame } from "@domain/models/game-model";
+import type { Coordinates } from "@websocket-chess/shared";
+
+import type {
+  Piece as TPiece,
+  Board as TBoard,
+  Game as TGame,
+} from "@domain/models/game-model";
 import type { Player as TPlayer } from "@domain/models/player.model";
+
+import { useChessBoard } from "@hooks/use-chess-board";
 
 import Cell from "./cell";
 import Piece from "./piece";
+import { cn } from "@lib/utils";
 
 interface IBoardProps {
   board: TBoard;
   game: TGame;
   player: TPlayer;
+  onMove: (from: Coordinates, to: Coordinates) => void;
+  onCapture: (from: Coordinates, to: Coordinates) => void;
 }
 
-function Board({ board, game, player }: IBoardProps) {
-  console.log({ board, game, player });
+function Board({ board, game, player, onMove, onCapture }: IBoardProps) {
+  const { cellIsSelected, onCellClick } = useChessBoard(board, {
+    onMove,
+    onCapture,
+  });
+
+  const isPlayerTurn = player.color
+    ? game.turn.value === player.color.value
+    : false;
+
+  const isEnemyPiece = (piece: TPiece) =>
+    piece.color.value !== player.color.value;
+
+  const canSelectPiece = (cell: TPiece | null) => {
+    if (!isPlayerTurn) return false;
+    if (cell !== null && !isEnemyPiece(cell)) return true;
+
+    return false;
+  };
+
   return (
     <div
       className="
@@ -35,10 +64,12 @@ function Board({ board, game, player }: IBoardProps) {
             row.map((cell, x) => (
               <Cell
                 key={`${y}-${x}`}
-                className={`${(y + x) % 2 === 0 ? "bg-[linear-gradient(135deg,#f0d9b5_0%,#e8d4a8_100%)]" : "bg-[linear-gradient(135deg,#b58863_0%,#a07150_100%)]"}`}
-                disabled={
-                  player.color ? game.turn.value !== player.color.value : false
-                }
+                className={cn(
+                  `${(y + x) % 2 === 0 ? "bg-[linear-gradient(135deg,#f0d9b5_0%,#e8d4a8_100%)]" : "bg-[linear-gradient(135deg,#b58863_0%,#a07150_100%)]"}`,
+                  cellIsSelected({ x, y }) && "border-2 border-blue-500",
+                )}
+                onClick={() => onCellClick({ x, y })}
+                disabled={!canSelectPiece(cell, { x, y })}
               >
                 {cell && <Piece color={cell.color.value} type={cell.type} />}
               </Cell>

@@ -2,6 +2,8 @@ import { useParams } from "react-router-dom";
 
 import { JoinGameRoomService } from "@data/services/join-game-room-service";
 import { StartGameService } from "@data/services/start-game-service";
+import { MovePieceService } from "@data/services/move-piece-service";
+import { CapturePieceService } from "@data/services/capture-piece-service";
 
 import { socketClient } from "@infra/socket/instance";
 
@@ -14,6 +16,8 @@ import GamePageView from "./game-page.view";
 
 const joinGameRoomService = new JoinGameRoomService(socketClient);
 const startGameService = new StartGameService(socketClient);
+const movePieceService = new MovePieceService(socketClient);
+const capturePieceService = new CapturePieceService(socketClient);
 
 export default function GamePageViewModel() {
   const { gameRoomId } = useParams();
@@ -30,6 +34,8 @@ export default function GamePageViewModel() {
     socketClient,
     joinGameRoomService,
     startGameService,
+    movePieceService,
+    capturePieceService,
   });
 
   return <GamePageView {...methods} />;

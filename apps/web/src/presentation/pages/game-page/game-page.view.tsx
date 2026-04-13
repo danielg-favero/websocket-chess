@@ -9,6 +9,8 @@ export default function GamePageView({
   gameRoom,
   player,
   startGame,
+  capturePiece,
+  movePiece,
 }: IUseGamePageModel) {
   if (!game) return null;
   if (!gameRoom) return null;
@@ -20,7 +22,13 @@ export default function GamePageView({
     <>
       <div className="flex flex-col gap-4 h-screen w-screen items-center justify-center">
         <GameRoomStatusBlockScreen status={gameRoom.status} />
-        <Board board={game.board} game={game} player={player} />
+        <Board
+          board={game.board}
+          game={game}
+          player={player}
+          onMove={movePiece}
+          onCapture={capturePiece}
+        />
         {gameRoom.status === "WAITING_GAME_START" && (
           <Button
             size="lg"

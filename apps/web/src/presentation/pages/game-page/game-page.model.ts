@@ -1,8 +1,11 @@
 import { useEffect } from "react";
-import { SERVER_EVENTS } from "@websocket-chess/shared";
+import { SERVER_EVENTS, type Coordinates } from "@websocket-chess/shared";
+import { toast } from "@lib/toast";
 
 import type { IJoinGameRoomService } from "@data/services/join-game-room-service.types";
 import type { IStartGameService } from "@data/services/start-game-service.types";
+import type { IMovePieceService } from "@data/services/move-piece-service.types";
+import type { ICapturePieceService } from "@data/services/capture-piece-service.types";
 
 import type { ISocketClient } from "@infra/socket/types";
 
@@ -17,6 +20,8 @@ interface IUseGamePageModelParams {
   socketClient: ISocketClient;
   joinGameRoomService: IJoinGameRoomService;
   startGameService: IStartGameService;
+  movePieceService: IMovePieceService;
+  capturePieceService: ICapturePieceService;
   gameRoomId: string;
 }
 
@@ -28,9 +33,12 @@ export const useGamePageModel = ({
   gameRoomId,
   joinGameRoomService,
   startGameService,
+  capturePieceService,
+  movePieceService,
 }: IUseGamePageModelParams) => {
   useEffect(() => {
     socketClient.on("message", (message) => {
+      console.log(message);
       if (message.type === SERVER_EVENTS.GAME_ROOM_STATE) {
         gameRoomStore.setGameRoom(message.payload);
       }
@@ -42,8 +50,30 @@ export const useGamePageModel = ({
       if (message.type === SERVER_EVENTS.PLAYER_STATE) {
         currentPlayerStore.setPlayer(message.payload);
       }
+
+      if (message.type === SERVER_EVENTS.ERROR) {
+        toast.error(message.payload.message);
+      }
     });
   }, []);
+
+  const handleMovePiece = (from: Coordinates, to: Coordinates) => {
+    movePieceService.execute({
+      gameRoomId,
+      playerId: currentPlayerStore.player?.id,
+      from,
+      to,
+    });
+  };
+
+  const handleCapturePiece = (from: Coordinates, to: Coordinates) => {
+    capturePieceService.execute({
+      gameRoomId,
+      playerId: currentPlayerStore.player?.id,
+      from,
+      to,
+    });
+  };
 
   useEffect(() => {
     joinGameRoomService.execute({
@@ -57,6 +87,8 @@ export const useGamePageModel = ({
     gameRoom: gameRoomStore.gameRoom,
     player: currentPlayerStore.player,
     startGame: () => startGameService.execute({ gameRoomId }),
+    movePiece: handleMovePiece,
+    capturePiece: handleCapturePiece,
   };
 };
 
