@@ -1,17 +1,13 @@
 import type { Coordinates } from "@websocket-chess/shared";
 
-import type {
-  Piece as TPiece,
-  Board as TBoard,
-  Game as TGame,
-} from "@domain/models/game-model";
+import { cn } from "@lib/utils";
+import type { Board as TBoard, Game as TGame } from "@domain/models/game-model";
 import type { Player as TPlayer } from "@domain/models/player.model";
 
 import { useChessBoard } from "@hooks/use-chess-board";
 
 import Cell from "./cell";
 import Piece from "./piece";
-import { cn } from "@lib/utils";
 
 interface IBoardProps {
   board: TBoard;
@@ -30,16 +26,6 @@ function Board({ board, game, player, onMove, onCapture }: IBoardProps) {
   const isPlayerTurn = player.color
     ? game.turn.value === player.color.value
     : false;
-
-  const isEnemyPiece = (piece: TPiece) =>
-    piece.color.value !== player.color.value;
-
-  const canSelectPiece = (cell: TPiece | null) => {
-    if (!isPlayerTurn) return false;
-    if (cell !== null && !isEnemyPiece(cell)) return true;
-
-    return false;
-  };
 
   return (
     <div
@@ -70,7 +56,7 @@ function Board({ board, game, player, onMove, onCapture }: IBoardProps) {
                   cellIsSelected({ x, y }) && "border-2 border-blue-500",
                 )}
                 onClick={() => onCellClick({ x, y })}
-                disabled={!canSelectPiece(cell, { x, y })}
+                disabled={!isPlayerTurn}
               >
                 {cell && <Piece color={cell.color.value} type={cell.type} />}
               </Cell>
